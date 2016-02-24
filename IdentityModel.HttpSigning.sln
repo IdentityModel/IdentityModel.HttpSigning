@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityModel.HttpSigning", "src\IdentityModel.HttpSigning\IdentityModel.HttpSigning.csproj", "{3BC9546F-8D64-4FC8-8E7A-EEB19B7C2FC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityModel.HttpSigning.Tests", "src\IdentityModel.HttpSigning.Tests\IdentityModel.HttpSigning.Tests.csproj", "{6D50DFE6-3A3C-4A58-B416-3991B3723B60}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3BC9546F-8D64-4FC8-8E7A-EEB19B7C2FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BC9546F-8D64-4FC8-8E7A-EEB19B7C2FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BC9546F-8D64-4FC8-8E7A-EEB19B7C2FC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BC9546F-8D64-4FC8-8E7A-EEB19B7C2FC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D50DFE6-3A3C-4A58-B416-3991B3723B60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D50DFE6-3A3C-4A58-B416-3991B3723B60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D50DFE6-3A3C-4A58-B416-3991B3723B60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D50DFE6-3A3C-4A58-B416-3991B3723B60}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
