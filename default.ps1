@@ -5,7 +5,7 @@ properties {
 	$dist_directory = "$base_directory\distribution"
 	$sln_file = "$base_directory\IdentityModel.HttpSigning.sln"
 	$target_config = "Release"
-	$nuget_path = "$base_directory\nuget.exe"
+	$nuget_path = "$base_directory\packages\nuget.exe"
 	$xunit_path = "$base_directory\packages\xunit.runner.console\tools\xunit.console.exe"
 
 	$buildNumber = 0;
@@ -13,7 +13,7 @@ properties {
 	$preRelease = $null
 }
 
-task default -depends Clean, CreateNuGetPackage
+task default -depends Clean, RunTests, CreateNuGetPackage
 task appVeyor -depends Clean, CreateNuGetPackage
 
 task Clean {
@@ -50,7 +50,7 @@ task RunTests -depends Compile {
 	.$xunit_path "$output_directory\$project.dll"
 }
 
-task CreateNuGetPackage -depends Compile, RunTests {
+task CreateNuGetPackage -depends Compile {
 	$vSplit = $version.Split('.')
 	if($vSplit.Length -ne 4)
 	{

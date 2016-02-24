@@ -3,19 +3,23 @@ Param(
 	[string]$preRelease = $null
 )
 
-$exists = Test-Path nuget.exe
-
-if ($exists -eq $false) {
-    $source = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
-    Invoke-WebRequest $source -OutFile nuget.exe
+$packages_exists = Test-Path packages
+if ($packages_exists -eq $false) {
+    mkdir packages
 }
 
-.\nuget.exe install psake -ExcludeVersion -o packages -nocache
-.\nuget.exe install xunit.runner.console -ExcludeVersion -o packages -nocache
+$exists = Test-Path packages\nuget.exe
+if ($exists -eq $false) {
+    $source = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe"
+    Invoke-WebRequest $source -OutFile packages\nuget.exe
+}
 
-gci .\source -Recurse "packages.config" |% {
+.\packages\nuget.exe install psake -ExcludeVersion -o packages -nocache
+.\packages\nuget.exe install xunit.runner.console -ExcludeVersion -o packages -nocache
+
+gci .\src -Recurse "packages.config" |% {
 	"Restoring " + $_.FullName
-	.\nuget.exe install $_.FullName -o .\source\packages
+	.\packages\nuget.exe install $_.FullName -o .\packages
 }
 
 Import-Module .\packages\psake\tools\psake.psm1
