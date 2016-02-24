@@ -31,12 +31,13 @@ namespace IdentityModel.HttpSigning.Tests
             subject.Value.Should().Be(expected);
         }
 
-        [Fact(Skip ="dunno")]
+        [Fact(Skip ="RFC has a typo")]
         public void encoding_should_match_example_in_RFC()
         {
             // https://tools.ietf.org/html/draft-ietf-oauth-signed-http-request-02#section-3.2
             // Content-Type: application/json, Etag: 742-3u8f34-3r2nvv3
             // "h": [["content-type", "etag"], "bZA981YJBrPlIzOvplbu3e7ueREXXr38vSkxIBYOaxI"]
+            // should be: P6z5XN4tTzHkfwe3XO1YvVUIurSuhvh_UG10N_j-aGs
 
             var items = new List<KeyValuePair<string, string>>();
             items.Add(new KeyValuePair<string, string>("Content-Type", "application/json"));
@@ -49,6 +50,7 @@ namespace IdentityModel.HttpSigning.Tests
 
             var result = subject.ToEncodedArray();
             var resultValue = (string)result[1];
+            //resultValue.Should().Be("P6z5XN4tTzHkfwe3XO1YvVUIurSuhvh_UG10N_j-aGs");
             resultValue.Should().Be("bZA981YJBrPlIzOvplbu3e7ueREXXr38vSkxIBYOaxI");
         }
     }
