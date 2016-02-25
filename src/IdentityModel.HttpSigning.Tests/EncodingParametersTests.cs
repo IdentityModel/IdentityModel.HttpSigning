@@ -16,19 +16,19 @@ namespace IdentityModel.HttpSigning.Tests
 {
     public class EncodingParametersTests
     {
-        EncodingParameters _subject = new EncodingParameters();
+        EncodingParameters _subject = new EncodingParameters("abc");
 
         [Fact]
-        public void encoding_should_require_accesstoken()
+        public void ctor_should_require_accesstoken()
         {
-            Assert.Throws<InvalidOperationException>(() => _subject.ToEncodedDictionary());
+            Assert.Throws<ArgumentNullException>(() => new EncodingParameters(null));
+            Assert.Throws<ArgumentNullException>(() => new EncodingParameters(""));
         }
 
         [Fact]
         public void encoding_should_contain_basic_values()
         {
             var now = new DateTimeOffset(new DateTime(2016, 2, 3, 4, 5, 6));
-            _subject.AccessToken = "abc";
             _subject.TimeStamp = now;
 
             var values = _subject.ToEncodedDictionary();
@@ -43,7 +43,6 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_http_method()
         {
-            _subject.AccessToken = "abc";
             _subject.HttpMethod = HttpMethod.Post;
 
             var values = _subject.ToEncodedDictionary();
@@ -55,7 +54,6 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_host()
         {
-            _subject.AccessToken = "abc";
             _subject.Host = "localhost:12345";
 
             var values = _subject.ToEncodedDictionary();
@@ -67,7 +65,6 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_url_path()
         {
-            _subject.AccessToken = "abc";
             _subject.UrlPath = "/foo";
 
             var values = _subject.ToEncodedDictionary();
@@ -79,7 +76,6 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_query_params()
         {
-            _subject.AccessToken = "abc";
             _subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar"));
 
             var values = _subject.ToEncodedDictionary();
@@ -97,7 +93,6 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_header_list()
         {
-            _subject.AccessToken = "abc";
             _subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar"));
 
             var values = _subject.ToEncodedDictionary();
@@ -115,7 +110,6 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_body()
         {
-            _subject.AccessToken = "abc";
             _subject.Body = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
 
             var values = _subject.ToEncodedDictionary();

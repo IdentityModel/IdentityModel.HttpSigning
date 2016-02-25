@@ -12,14 +12,20 @@ namespace IdentityModel.HttpSigning
 {
     public class EncodingParameters
     {
-        public EncodingParameters()
+        public EncodingParameters(string accessToken)
         {
+            if (String.IsNullOrWhiteSpace(accessToken))
+            {
+                throw new ArgumentNullException("accessToken");
+            }
+
+            AccessToken = accessToken;
             TimeStamp = DateTimeOffset.UtcNow;
             QueryParameters = new Dictionary<string, string>();
             RequestHeaders = new Dictionary<string, string>();
         }
 
-        public string AccessToken { get; set; }
+        public string AccessToken { get; private set; }
         public DateTimeOffset TimeStamp { get; set; }
         public HttpMethod HttpMethod { get; set; }
         public string Host { get; set; }
@@ -30,8 +36,6 @@ namespace IdentityModel.HttpSigning
 
         public Dictionary<string, object> ToEncodedDictionary()
         {
-            if (AccessToken == null) throw new InvalidOperationException("AccessToken is required");
-
             var value = new Dictionary<string, object>();
 
             value.Add(HttpSigningConstants.SignedObjectParameterNames.AccessToken, AccessToken);
