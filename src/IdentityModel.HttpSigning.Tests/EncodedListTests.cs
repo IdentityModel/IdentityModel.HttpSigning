@@ -61,7 +61,7 @@ namespace IdentityModel.HttpSigning.Tests
         [InlineData(new string[] { "A", "B" }, new string[] { "apple", "banana" }, "A-apple,B-banana")]
         [InlineData(new string[] { "a", "b", "c" }, new string[] { "apple", "banana", "carrot" }, "a-apple,b-banana,c-carrot")]
         [InlineData(new string[] { "a", "b", "b", "b" }, new string[] { "apple", "banana", "carrot", "duck" }, "a-apple,b-banana,b-carrot,b-duck")]
-        public void constructor_should_capture_values_correctly(string[] keys, string[] values, string expected)
+        public void list_constructor_should_capture_values_correctly(string[] keys, string[] values, string expected)
         {
             var items = new List<KeyValuePair<string, string>>();
             for (var i = 0; i < keys.Length; i++)
