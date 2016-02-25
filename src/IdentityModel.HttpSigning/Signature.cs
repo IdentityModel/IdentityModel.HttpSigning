@@ -19,13 +19,17 @@ namespace IdentityModel.HttpSigning
 
         protected Signature(object key, JwsAlgorithm alg)
         {
+            if (key == null) throw new ArgumentNullException("key");
+
             _key = key;
             _alg = alg;
         }
 
         public string Sign(SigningParameters payload)
         {
-            return JWT.Encode(payload, _key, _alg);
+            if (payload == null) throw new ArgumentNullException("payload");
+
+            return JWT.Encode(payload.ToEncodedDictionary(), _key, _alg);
         }
     }
 
