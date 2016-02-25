@@ -76,11 +76,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EncodedHeaderListTests.cs" />
-    <Compile Include="EncodedListTests.cs" />
-    <Compile Include="EncodedQueryParametersTests.cs" />
+    <Compile Include="EncodingHeaderListTests.cs" />
+    <Compile Include="DecodedListTests.cs" />
+    <Compile Include="EncodingListTests.cs" />
+    <Compile Include="DecodedParametersTests.cs" />
+    <Compile Include="EncodingQueryParametersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SigningParametersTests.cs" />
+    <Compile Include="EncodingParametersTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\default.licenseheader">

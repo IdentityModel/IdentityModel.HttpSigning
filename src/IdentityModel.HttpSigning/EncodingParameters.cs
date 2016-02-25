@@ -7,14 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityModel.HttpSigning
 {
-    public class SigningParameters
+    public class EncodingParameters
     {
-        public SigningParameters()
+        public EncodingParameters()
         {
             TimeStamp = DateTimeOffset.UtcNow;
             QueryParameters = new Dictionary<string, string>();
@@ -56,14 +54,14 @@ namespace IdentityModel.HttpSigning
 
             if (QueryParameters != null && QueryParameters.Any())
             {
-                var query = new EncodedQueryParameters(QueryParameters);
+                var query = new EncodingQueryParameters(QueryParameters);
                 var array = query.ToEncodedArray();
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.HashedQueryParameters, array);
             }
 
             if (RequestHeaders != null && RequestHeaders.Any())
             {
-                var headers = new EncodedHeaderList(RequestHeaders);
+                var headers = new EncodingHeaderList(RequestHeaders);
                 var array = headers.ToEncodedArray();
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.HashedRequestHeaders, array);
             }

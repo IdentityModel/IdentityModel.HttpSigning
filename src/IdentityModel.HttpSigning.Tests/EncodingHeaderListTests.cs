@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using IdentityModel.HttpSigning;
 
 namespace IdentityModel.HttpSigning.Tests
 {
-    public class EncodedHeaderListTests
+    public class EncodingHeaderListTests
     {
         [Theory]
         [InlineData(new string[] { "a" }, new string[] { "apple" }, "a: apple")]
@@ -26,7 +27,7 @@ namespace IdentityModel.HttpSigning.Tests
             {
                 items.Add(new KeyValuePair<string, string>(keys[i], values[i]));
             }
-            var subject = new EncodedHeaderList(items);
+            var subject = new EncodingHeaderList(items);
 
             subject.Value.Should().Be(expected);
         }
@@ -42,7 +43,7 @@ namespace IdentityModel.HttpSigning.Tests
             var items = new List<KeyValuePair<string, string>>();
             items.Add(new KeyValuePair<string, string>("Content-Type", "application/json"));
             items.Add(new KeyValuePair<string, string>("Etag", "742-3u8f34-3r2nvv3"));
-            var subject = new EncodedHeaderList(items);
+            var subject = new EncodingHeaderList(items);
 
             subject.Keys.Count().Should().Be(2);
             subject.Keys.Should().ContainInOrder(new string[] { "content-type", "etag" });

@@ -53,13 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EncodedHeaderList.cs" />
-    <Compile Include="EncodedList.cs" />
-    <Compile Include="EncodedQueryParameters.cs" />
+    <Compile Include="DecodedList.cs" />
+    <Compile Include="EncodingHeaderList.cs" />
+    <Compile Include="EncodingList.cs" />
+    <Compile Include="DecodedParameters.cs" />
+    <Compile Include="EncodingQueryParameters.cs" />
     <Compile Include="HttpSigningConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Signature.cs" />
-    <Compile Include="SigningParameters.cs" />
+    <Compile Include="EncodingParameters.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\default.licenseheader">

@@ -7,13 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace IdentityModel.HttpSigning
 {
-    public class EncodedList
+    public class EncodingList
     {
-        public EncodedList(
+        public EncodingList(
             ICollection<KeyValuePair<string, string>> list,
             string keyValueSeparator,
             string parameterSeparator, 

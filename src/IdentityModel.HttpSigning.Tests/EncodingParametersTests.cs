@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,24 +14,24 @@ using System.Net.Http;
 
 namespace IdentityModel.HttpSigning.Tests
 {
-    public class SigningParametersTests
+    public class EncodingParametersTests
     {
-        SigningParameters subject = new SigningParameters();
+        EncodingParameters _subject = new EncodingParameters();
 
         [Fact]
         public void encoding_should_require_accesstoken()
         {
-            Assert.Throws<InvalidOperationException>(() => subject.ToEncodedDictionary());
+            Assert.Throws<InvalidOperationException>(() => _subject.ToEncodedDictionary());
         }
 
         [Fact]
         public void encoding_should_contain_basic_values()
         {
             var now = new DateTimeOffset(new DateTime(2016, 2, 3, 4, 5, 6));
-            subject.AccessToken = "abc";
-            subject.TimeStamp = now;
+            _subject.AccessToken = "abc";
+            _subject.TimeStamp = now;
 
-            var values = subject.ToEncodedDictionary();
+            var values = _subject.ToEncodedDictionary();
 
             values.Keys.Count.Should().Be(2);
             values.ContainsKey("at").Should().BeTrue();
@@ -42,10 +43,10 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_http_method()
         {
-            subject.AccessToken = "abc";
-            subject.HttpMethod = HttpMethod.Post;
+            _subject.AccessToken = "abc";
+            _subject.HttpMethod = HttpMethod.Post;
 
-            var values = subject.ToEncodedDictionary();
+            var values = _subject.ToEncodedDictionary();
 
             values.ContainsKey("m").Should().BeTrue();
             values["m"].Should().Be("POST");
@@ -54,10 +55,10 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_host()
         {
-            subject.AccessToken = "abc";
-            subject.Host = "localhost:12345";
+            _subject.AccessToken = "abc";
+            _subject.Host = "localhost:12345";
 
-            var values = subject.ToEncodedDictionary();
+            var values = _subject.ToEncodedDictionary();
 
             values.ContainsKey("u").Should().BeTrue();
             values["u"].Should().Be("localhost:12345");
@@ -66,10 +67,10 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_url_path()
         {
-            subject.AccessToken = "abc";
-            subject.UrlPath = "/foo";
+            _subject.AccessToken = "abc";
+            _subject.UrlPath = "/foo";
 
-            var values = subject.ToEncodedDictionary();
+            var values = _subject.ToEncodedDictionary();
 
             values.ContainsKey("p").Should().BeTrue();
             values["p"].Should().Be("/foo");
@@ -78,10 +79,10 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_query_params()
         {
-            subject.AccessToken = "abc";
-            subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar"));
+            _subject.AccessToken = "abc";
+            _subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar"));
 
-            var values = subject.ToEncodedDictionary();
+            var values = _subject.ToEncodedDictionary();
 
             values.ContainsKey("q").Should().BeTrue();
             values["q"].Should().BeAssignableTo<object[]>();
@@ -96,10 +97,10 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_header_list()
         {
-            subject.AccessToken = "abc";
-            subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar"));
+            _subject.AccessToken = "abc";
+            _subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar"));
 
-            var values = subject.ToEncodedDictionary();
+            var values = _subject.ToEncodedDictionary();
 
             values.ContainsKey("h").Should().BeTrue();
             values["h"].Should().BeAssignableTo<object[]>();
@@ -114,10 +115,10 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_body()
         {
-            subject.AccessToken = "abc";
-            subject.Body = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
+            _subject.AccessToken = "abc";
+            _subject.Body = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
 
-            var values = subject.ToEncodedDictionary();
+            var values = _subject.ToEncodedDictionary();
 
             values.ContainsKey("b").Should().BeTrue();
             var body = (string)values["b"];

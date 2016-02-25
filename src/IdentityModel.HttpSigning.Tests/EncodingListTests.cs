@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,13 @@ using IdentityModel.HttpSigning;
 
 namespace IdentityModel.HttpSigning.Tests
 {
-    public class EncodedListTests
+    public class EncodingListTests
     {
         [Fact]
         public void constructor_should_require_items()
         {
-            Assert.Throws<ArgumentNullException>(() => new EncodedList(null, "-", ",", false));
-            Assert.Throws<ArgumentException>(() => new EncodedList(new List<KeyValuePair<string, string>>(), "-", ",", false));
+            Assert.Throws<ArgumentNullException>(() => new EncodingList(null, "-", ",", false));
+            Assert.Throws<ArgumentException>(() => new EncodingList(new List<KeyValuePair<string, string>>(), "-", ",", false));
         }
 
         [Fact]
@@ -26,7 +27,7 @@ namespace IdentityModel.HttpSigning.Tests
         {
             var items = new List<KeyValuePair<string, string>>();
             items.Add(new KeyValuePair<string, string>("a", "apple"));
-            var subject = new EncodedList(items, "-", ",", false);
+            var subject = new EncodingList(items, "-", ",", false);
 
             var result = subject.ToEncodedArray();
             result.Length.Should().Be(2);
@@ -47,7 +48,7 @@ namespace IdentityModel.HttpSigning.Tests
             {
                 items.Add(new KeyValuePair<string, string>(keys[i], values[i]));
             }
-            var subject = new EncodedList(items, "-", ",", false);
+            var subject = new EncodingList(items, "-", ",", false);
 
             subject.Keys.Count().Should().Be(keys.Length);
             subject.Keys.Should().ContainInOrder(keys);
@@ -68,7 +69,7 @@ namespace IdentityModel.HttpSigning.Tests
             {
                 items.Add(new KeyValuePair<string, string>(keys[i], values[i]));
             }
-            var subject = new EncodedList(items, "-", ",", false);
+            var subject = new EncodingList(items, "-", ",", false);
 
             subject.Value.Should().Be(expected);
         }
@@ -85,7 +86,7 @@ namespace IdentityModel.HttpSigning.Tests
             {
                 items.Add(new KeyValuePair<string, string>(keys[i], values[i]));
             }
-            var subject = new EncodedList(items, "-", ",", true);
+            var subject = new EncodingList(items, "-", ",", true);
 
             subject.Value.Should().Be(expected);
         }
@@ -102,7 +103,7 @@ namespace IdentityModel.HttpSigning.Tests
             {
                 items.Add(new KeyValuePair<string, string>(keys[i], values[i]));
             }
-            var subject = new EncodedList(items, "-", ",", false);
+            var subject = new EncodingList(items, "-", ",", false);
             var result = subject.ToEncodedArray();
             var resultKeys = (IEnumerable<string>)result[0];
 
@@ -122,7 +123,7 @@ namespace IdentityModel.HttpSigning.Tests
             {
                 items.Add(new KeyValuePair<string, string>(keys[i], values[i]));
             }
-            var subject = new EncodedList(items, "-", ",", false);
+            var subject = new EncodingList(items, "-", ",", false);
             var result = subject.ToEncodedArray();
 
             var resultValue = (string)result[1];
