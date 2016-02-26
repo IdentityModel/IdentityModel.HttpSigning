@@ -82,7 +82,7 @@ namespace IdentityModel.HttpSigning.Tests
         }
 
         [Fact]
-        public void authorization_header_not_bearer_GetAccessToken_should_return_null()
+        public void authorization_header_not_pop_GetAccessToken_should_return_null()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("foo", "bar");
@@ -91,10 +91,10 @@ namespace IdentityModel.HttpSigning.Tests
         }
 
         [Fact]
-        public void authorization_header_with_bearer_GetAccessToken_should_return_token()
+        public void authorization_header_with_pop_GetAccessToken_should_return_token()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
             var token = request.GetAccessToken();
             token.Should().Be("token");
         }
@@ -109,6 +109,5 @@ namespace IdentityModel.HttpSigning.Tests
             request.Headers.Authorization.Scheme.Should().Be("PoP");
             request.Headers.Authorization.Parameter.Should().Be("token");
         }
-
     }
 }

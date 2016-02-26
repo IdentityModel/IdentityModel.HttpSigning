@@ -26,7 +26,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task no_settings_should_capture_just_access_token()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
 
             var parameters = await _subject.CreateEncodingParametersAsync(request);
             parameters.AccessToken.Should().Be("token");
@@ -42,7 +42,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task http_method_should_be_captured()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
 
             _subject.SignHttpMethod = true;
             var parameters = await _subject.CreateEncodingParametersAsync(request);
@@ -54,7 +54,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task host_method_should_be_captured()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
 
             _subject.SignHost = true;
             var parameters = await _subject.CreateEncodingParametersAsync(request);
@@ -66,7 +66,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task url_should_be_captured()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar?x=1");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
 
             _subject.SignUrlPath = true;
             var parameters = await _subject.CreateEncodingParametersAsync(request);
@@ -78,7 +78,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task body_should_be_captured()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar?x=1");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
             request.Content = new StringContent("hello");
 
             _subject.SignBody = true;
@@ -91,7 +91,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task all_query_params_should_be_captured()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar?x=1&y=2");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
             request.Content = new StringContent("hello");
 
             _subject.SignAllQueryParameters = true;
@@ -106,7 +106,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task query_params_should_be_captured()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar?y=2&x=1&y=3");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
             request.Content = new StringContent("hello");
 
             _subject.QueryParametersToSign = new string[] { "x", "y", "z" };
@@ -121,7 +121,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task request_headers_should_be_captured()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar?x=1&y=2");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
             request.Headers.Add("c", "carrot");
             request.Headers.Add("a", "apple");
             request.Headers.Add("a", "pear");

@@ -34,7 +34,7 @@ namespace IdentityModel.HttpSigning.Tests
         public async Task when_parameters_created_ProcessSignatureAsync_should_set_authorization_header()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar");
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
             await _subject.ProcessSignatureAsync(request);
 
             request.Headers.Authorization.Should().NotBeNull();

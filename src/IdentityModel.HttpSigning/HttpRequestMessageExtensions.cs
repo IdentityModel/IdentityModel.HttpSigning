@@ -26,7 +26,7 @@ namespace IdentityModel.HttpSigning
         {
             if (request == null) throw new ArgumentNullException("request");
 
-            if ("Bearer".Equals(request.Headers?.Authorization?.Scheme, StringComparison.OrdinalIgnoreCase))
+            if (HttpSigningConstants.AccessTokenParameterNames.AuthorizationHeaderScheme.Equals(request.Headers?.Authorization?.Scheme, StringComparison.OrdinalIgnoreCase))
             {
                 return request.Headers.Authorization.Parameter;
             }
