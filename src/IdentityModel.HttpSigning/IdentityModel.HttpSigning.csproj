@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,10 +59,13 @@
     <Compile Include="EncodingList.cs" />
     <Compile Include="DecodedParameters.cs" />
     <Compile Include="EncodingQueryParameters.cs" />
+    <Compile Include="HttpRequestMessageExtensions.cs" />
     <Compile Include="HttpSigningConstants.cs" />
+    <Compile Include="HttpSigningMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Signature.cs" />
     <Compile Include="EncodingParameters.cs" />
+    <Compile Include="SigningOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\default.licenseheader">

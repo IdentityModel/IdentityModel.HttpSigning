@@ -85,9 +85,13 @@
     <Compile Include="EncodingListTests.cs" />
     <Compile Include="DecodedParametersTests.cs" />
     <Compile Include="EncodingQueryParametersTests.cs" />
+    <Compile Include="HttpRequestMessageExtensionsTests.cs" />
+    <Compile Include="HttpSigningMessageHandlerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EncodingParametersTests.cs" />
     <Compile Include="SignatureTests.cs" />
+    <Compile Include="SigningOptionsTests.cs" />
+    <Compile Include="StubHttpMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\default.licenseheader">
