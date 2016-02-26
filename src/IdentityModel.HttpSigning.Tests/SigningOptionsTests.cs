@@ -105,16 +105,16 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public async Task query_params_should_be_captured()
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar?y=2&x=1");
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar?y=2&x=1&y=3");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
             request.Content = new StringContent("hello");
 
             _subject.QueryParametersToSign = new string[] { "x", "y", "z" };
             var parameters = await _subject.CreateEncodingParametersAsync(request);
 
-            parameters.QueryParameters.Count.Should().Be(2);
-            parameters.QueryParameters.Select(x => x.Key).Should().ContainInOrder(new string[] { "x", "y" });
-            parameters.QueryParameters.Select(x => x.Value).Should().ContainInOrder(new string[] { "1", "2" });
+            parameters.QueryParameters.Count.Should().Be(3);
+            parameters.QueryParameters.Select(x => x.Key).Should().ContainInOrder(new string[] { "x", "y", "y" });
+            parameters.QueryParameters.Select(x => x.Value).Should().ContainInOrder(new string[] { "1", "2", "3" });
         }
 
         [Fact]
@@ -124,14 +124,15 @@ namespace IdentityModel.HttpSigning.Tests
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", "token");
             request.Headers.Add("c", "carrot");
             request.Headers.Add("a", "apple");
+            request.Headers.Add("a", "pear");
             request.Content = new StringContent("hello");
 
             _subject.RequestHeadersToSign = new string[] { "a", "b", "c" };
             var parameters = await _subject.CreateEncodingParametersAsync(request);
 
-            parameters.RequestHeaders.Count.Should().Be(2);
-            parameters.RequestHeaders.Select(x => x.Key).Should().ContainInOrder(new string[] { "a", "c" });
-            parameters.RequestHeaders.Select(x => x.Value).Should().ContainInOrder(new string[] { "apple", "carrot" });
+            parameters.RequestHeaders.Count.Should().Be(3);
+            parameters.RequestHeaders.Select(x => x.Key).Should().ContainInOrder(new string[] { "a", "a", "c" });
+            parameters.RequestHeaders.Select(x => x.Value).Should().ContainInOrder(new string[] { "apple", "pear", "carrot" });
         }
     }
 }

@@ -76,7 +76,8 @@ namespace IdentityModel.HttpSigning.Tests
         [Fact]
         public void encoding_should_emit_query_params()
         {
-            _subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar"));
+            _subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar1"));
+            _subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar2"));
 
             var values = _subject.ToEncodedDictionary();
 
@@ -84,16 +85,17 @@ namespace IdentityModel.HttpSigning.Tests
             values["q"].Should().BeAssignableTo<object[]>();
             var parts = (object[])values["q"];
             var keys = (IEnumerable<string>)parts[0];
-            keys.Count().Should().Be(1);
-            keys.Should().Contain("foo");
+            keys.Count().Should().Be(2);
+            keys.Should().ContainInOrder(new string[] { "foo", "foo" });
             var value = (string)parts[1];
-            value.Should().Be("O6iQfnolIydIjfOQ7VF8Rblt6tAzYAIZvcpxB9HT-Io");
+            value.Should().Be("EgePUeakH8URmSH3yz8zE39c0r4kYVYsuQRSZa_MdvQ");
         }
 
         [Fact]
         public void encoding_should_emit_header_list()
         {
-            _subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar"));
+            _subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar1"));
+            _subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar2"));
 
             var values = _subject.ToEncodedDictionary();
 
@@ -101,10 +103,10 @@ namespace IdentityModel.HttpSigning.Tests
             values["h"].Should().BeAssignableTo<object[]>();
             var parts = (object[])values["h"];
             var keys = (IEnumerable<string>)parts[0];
-            keys.Count().Should().Be(1);
-            keys.Should().Contain("foo");
+            keys.Count().Should().Be(2);
+            keys.Should().ContainInOrder(new string[] { "foo", "foo" });
             var value = (string)parts[1];
-            value.Should().Be("BwkdnntjrIaWbjllLKUydWgUWue2Gha31d8p-RhkHqU");
+            value.Should().Be("trcKLrzChz2G8_T50KpExyZ9DTfcsMTXsGGd3YwftLc");
         }
 
         [Fact]

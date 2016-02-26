@@ -56,7 +56,13 @@ namespace IdentityModel.HttpSigning
                     var value = query[key];
                     if (value != null)
                     {
-                        parameters.QueryParameters.Add(new KeyValuePair<string, string>(key, value));
+                        // warning: if the param itself has a "," then this is incorrect
+                        // since at this point the Uri is not escaped
+                        var values = value.Split(',');
+                        foreach (var val in values)
+                        {
+                            parameters.QueryParameters.Add(new KeyValuePair<string, string>(key, val));
+                        }
                     }
                 }
             }

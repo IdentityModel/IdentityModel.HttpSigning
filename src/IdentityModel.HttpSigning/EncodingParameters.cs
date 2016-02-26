@@ -21,8 +21,8 @@ namespace IdentityModel.HttpSigning
 
             AccessToken = accessToken;
             TimeStamp = DateTimeOffset.UtcNow;
-            QueryParameters = new Dictionary<string, string>();
-            RequestHeaders = new Dictionary<string, string>();
+            QueryParameters = new List<KeyValuePair<string, string>>();
+            RequestHeaders = new List<KeyValuePair<string, string>>();
         }
 
         public string AccessToken { get; private set; }
@@ -30,8 +30,8 @@ namespace IdentityModel.HttpSigning
         public HttpMethod HttpMethod { get; set; }
         public string Host { get; set; }
         public string UrlPath { get; set; }
-        public ICollection<KeyValuePair<string, string>> QueryParameters { get; set; }
-        public ICollection<KeyValuePair<string, string>> RequestHeaders { get; set; }
+        public IList<KeyValuePair<string, string>> QueryParameters { get; set; }
+        public IList<KeyValuePair<string, string>> RequestHeaders { get; set; }
         public byte[] Body { get; set; }
 
         public Dictionary<string, object> ToEncodedDictionary()
