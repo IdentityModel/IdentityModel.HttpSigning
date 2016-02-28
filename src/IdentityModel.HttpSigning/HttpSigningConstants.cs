@@ -35,5 +35,39 @@ namespace IdentityModel.HttpSigning
             public const string KeyValueSeparator = ": ";
             public const string ParameterSeparator = "\n";
         }
+
+        public class Cnf
+        {
+            public const string JwkProperty = "jwk";
+        }
+
+        public class Jwk
+        {
+            public const string KeyTypeProperty = "kty";
+            public const string AlgorithmProperty = "alg";
+            public const string KeyIdProperty = "kid";
+        }
+
+        public class HS
+        {
+            public static readonly string[] Algorithms = new string[]
+            {
+                "HS256", "HS384", "HS512"
+            };
+
+            public const string KeyType = "oct";
+            public const string KeyProperty = "k";
+        }
+
+        public class RS
+        {
+            public static readonly string[] Algorithms = new string[]
+            {
+                "RS256", "RS384", "RS512"
+            };
+            public const string KeyType = "RSA";
+            public const string ModulusProperty = "n";
+            public const string ExponentProperty = "e";
+        }
     }
 }

@@ -31,15 +31,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IdentityModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\IdentityModel.1.8.0\lib\net45\IdentityModel.dll</HintPath>
+      <HintPath>..\..\packages\IdentityModel.1.9.0\lib\net45\IdentityModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="jose-jwt, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\jose-jwt.1.9.1\lib\4.0\jose-jwt.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -54,25 +54,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DecodedList.cs" />
-    <Compile Include="EncodingHeaderList.cs" />
-    <Compile Include="EncodingList.cs" />
-    <Compile Include="DecodedParameters.cs" />
-    <Compile Include="EncodingQueryParameters.cs" />
-    <Compile Include="HttpRequestMessageExtensions.cs" />
+    <Compile Include="Confirmation\CnfParser.cs" />
+    <Compile Include="Confirmation\PublicKeys.cs" />
+    <Compile Include="Decoded\DecodedList.cs" />
+    <Compile Include="Encoding\EncodingHeaderList.cs" />
+    <Compile Include="Encoding\EncodingList.cs" />
+    <Compile Include="Decoded\DecodedParameters.cs" />
+    <Compile Include="Encoding\EncodingQueryParameters.cs" />
+    <Compile Include="HttpClient\HttpRequestMessageExtensions.cs" />
     <Compile Include="HttpSigningConstants.cs" />
-    <Compile Include="HttpSigningMessageHandler.cs" />
+    <Compile Include="HttpClient\HttpSigningMessageHandler.cs" />
+    <Compile Include="Confirmation\Jwk.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Signature.cs" />
-    <Compile Include="EncodingParameters.cs" />
-    <Compile Include="SigningOptions.cs" />
+    <Compile Include="Signatures\RSSignatures.cs" />
+    <Compile Include="Signatures\HSSignatures.cs" />
+    <Compile Include="Signatures\Signature.cs" />
+    <Compile Include="Encoding\EncodingParameters.cs" />
+    <Compile Include="Signatures\SigningOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\default.licenseheader">
       <Link>default.licenseheader</Link>
     </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

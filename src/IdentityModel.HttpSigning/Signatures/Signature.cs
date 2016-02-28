@@ -43,48 +43,4 @@ namespace IdentityModel.HttpSigning
             }
         }
     }
-
-    public class RS256Signature : Signature
-    {
-        public RS256Signature(RSACryptoServiceProvider key)
-            : base(JwsAlgorithm.RS256, key)
-        {
-        }
-    }
-    public class RS384Signature : Signature
-    {
-        public RS384Signature(RSACryptoServiceProvider key)
-            : base(JwsAlgorithm.RS384, key)
-        {
-        }
-    }
-    public class RS512Signature : Signature
-    {
-        public RS512Signature(RSACryptoServiceProvider key)
-            : base(JwsAlgorithm.RS512, key)
-        {
-        }
-    }
-
-    public class HS256Signature : Signature
-    {
-        public HS256Signature(byte[] key)
-            : base(JwsAlgorithm.HS256, key)
-        {
-        }
-    }
-    public class HS384Signature : Signature
-    {
-        public HS384Signature(byte[] key)
-            : base(JwsAlgorithm.HS384, key)
-        {
-        }
-    }
-    public class HS512Signature : Signature
-    {
-        public HS512Signature(byte[] key)
-            : base(JwsAlgorithm.HS512, key)
-        {
-        }
-    }
 }
