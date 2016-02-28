@@ -54,7 +54,7 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
             };
 
             var key = jwk.ToPublicKey();
-            key.Should().BeOfType<RSASigningKey>();
+            key.Should().BeOfType<RSAPublicKey>();
         }
     }
 }

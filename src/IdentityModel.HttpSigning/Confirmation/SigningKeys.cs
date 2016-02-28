@@ -60,9 +60,9 @@ namespace IdentityModel.HttpSigning
         }
     }
 
-    public class RSASigningKey : SigningKey
+    public class RSAPublicKey : SigningKey
     {
-        public RSASigningKey(Jwk jwk) : base(jwk)
+        public RSAPublicKey(Jwk jwk) : base(jwk)
         {
             Read();
         }

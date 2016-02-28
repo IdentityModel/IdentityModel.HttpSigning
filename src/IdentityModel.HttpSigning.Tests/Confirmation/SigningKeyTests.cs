@@ -100,13 +100,13 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
             };
 
             jwk.alg = "RS256";
-            new RSASigningKey(jwk).ModulusBytes.Should().NotBeNull();
+            new RSAPublicKey(jwk).ModulusBytes.Should().NotBeNull();
 
             jwk.alg = "RS384";
-            new RSASigningKey(jwk).ModulusBytes.Should().NotBeNull();
+            new RSAPublicKey(jwk).ModulusBytes.Should().NotBeNull();
 
             jwk.alg = "RS512";
-            new RSASigningKey(jwk).ModulusBytes.Should().NotBeNull();
+            new RSAPublicKey(jwk).ModulusBytes.Should().NotBeNull();
         }
 
         [Fact]
@@ -119,13 +119,13 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
             };
 
             jwk.alg = "RS256";
-            new RSASigningKey(jwk).ToSignature().Should().BeOfType<RS256Signature>();
+            new RSAPublicKey(jwk).ToSignature().Should().BeOfType<RS256Signature>();
 
             jwk.alg = "RS384";
-            new RSASigningKey(jwk).ToSignature().Should().BeOfType<RS384Signature>();
+            new RSAPublicKey(jwk).ToSignature().Should().BeOfType<RS384Signature>();
 
             jwk.alg = "RS512";
-            new RSASigningKey(jwk).ToSignature().Should().BeOfType<RS512Signature>();
+            new RSAPublicKey(jwk).ToSignature().Should().BeOfType<RS512Signature>();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace IdentityModel.HttpSigning
 
             if (kty == HttpSigningConstants.Jwk.RSA.KeyType)
             {
-                return new RSASigningKey(this);
+                return new RSAPublicKey(this);
             }
 
             throw new InvalidOperationException("Invalid key type");
