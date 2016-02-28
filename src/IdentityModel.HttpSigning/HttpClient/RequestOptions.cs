@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IdentityModel.HttpSigning
 {
-    public class SigningOptions
+    public class RequestOptions
     {
         public bool SignHttpMethod { get; set; }
         public bool SignHost { get; set; }

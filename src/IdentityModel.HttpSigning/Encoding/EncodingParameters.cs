@@ -83,5 +83,10 @@ namespace IdentityModel.HttpSigning
             var hash = SHA256.Create().ComputeHash(Body);
             return Jose.Base64Url.Encode(hash);
         }
+
+        public bool IsSame(EncodingParameters other)
+        {
+            return false;
+        }
     }
 }

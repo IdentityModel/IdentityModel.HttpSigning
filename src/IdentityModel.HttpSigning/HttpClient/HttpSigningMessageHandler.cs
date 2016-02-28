@@ -12,15 +12,15 @@ namespace IdentityModel.HttpSigning
     public class HttpSigningMessageHandler : DelegatingHandler
     {
         private readonly Signature _signature;
-        private readonly SigningOptions _options;
+        private readonly RequestOptions _options;
 
-        public HttpSigningMessageHandler(Signature signature, SigningOptions options, HttpMessageHandler innerHandler)
+        public HttpSigningMessageHandler(Signature signature, RequestOptions options, HttpMessageHandler innerHandler)
             : base(innerHandler)
         {
             if (signature == null) throw new ArgumentNullException("signature");
 
             _signature = signature;
-            _options = options ?? new SigningOptions();
+            _options = options ?? new RequestOptions();
         }
 
         public HttpSigningMessageHandler(Signature signature, HttpMessageHandler innerHandler)

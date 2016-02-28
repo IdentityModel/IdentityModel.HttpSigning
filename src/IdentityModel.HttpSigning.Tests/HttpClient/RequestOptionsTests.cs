@@ -9,9 +9,9 @@ using System.Net.Http;
 
 namespace IdentityModel.HttpSigning.Tests
 {
-    public class SigningOptionsTests
+    public class RequestOptionsTests
     {
-        SigningOptions _subject = new SigningOptions();
+        RequestOptions _subject = new RequestOptions();
 
         [Fact]
         public async Task no_access_token_should_not_create_parameters()
