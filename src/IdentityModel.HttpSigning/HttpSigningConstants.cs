@@ -36,8 +36,9 @@ namespace IdentityModel.HttpSigning
             public const string ParameterSeparator = "\n";
         }
 
-        public class Cnf
+        public class Confirmation
         {
+            public const string ConfirmationProperty = "cnf";
             public const string JwkProperty = "jwk";
         }
 
