@@ -13,63 +13,28 @@ namespace IdentityModel.HttpSigning
 {
     public class Jwk
     {
-        public Jwk(IDictionary<string, object> jwk)
+        public string kty { get; set; }
+        public string alg { get; set; }
+        public string kid { get; set; }
+
+        // asymmetric modulus
+        public string n { get; set; }
+        // asymmetric exponent
+        public string e { get; set; }
+        
+        // symmetric key
+        public string k { get; set; }
+
+        public SigningKey ToPublicKey()
         {
-            if (jwk == null) throw new ArgumentNullException("jwk");
-
-            Contents = jwk;
-            Read(jwk);
-        }
-
-        public IDictionary<string, object> Contents { get; private set; }
-
-        void Read(IDictionary<string, object> jwk)
-        {
-            if (!jwk.ContainsKey(HttpSigningConstants.Jwk.KeyTypeProperty))
+            if (kty == HttpSigningConstants.Jwk.Symmetric.KeyType)
             {
-                throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.KeyTypeProperty);
-            }
-            if (!jwk.ContainsKey(HttpSigningConstants.Jwk.AlgorithmProperty))
-            {
-                throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.AlgorithmProperty);
-            }
-            if (!jwk.ContainsKey(HttpSigningConstants.Jwk.KeyIdProperty))
-            {
-                throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.KeyIdProperty);
+                return new SymmetricKey(this);
             }
 
-            KeyType = jwk[HttpSigningConstants.Jwk.KeyTypeProperty] as string;
-            Algorithm = jwk[HttpSigningConstants.Jwk.AlgorithmProperty] as string;
-            KeyId = jwk[HttpSigningConstants.Jwk.KeyIdProperty] as string;
-
-            if (KeyType == null)
+            if (kty == HttpSigningConstants.Jwk.RSA.KeyType)
             {
-                throw new ArgumentException("Invalid " + HttpSigningConstants.Jwk.KeyTypeProperty);
-            }
-            if (Algorithm == null)
-            {
-                throw new ArgumentException("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
-            }
-            if (KeyId == null)
-            {
-                throw new ArgumentException("Invalid " + HttpSigningConstants.Jwk.KeyIdProperty);
-            }
-        }
-
-        public string KeyType { get; set; }
-        public string Algorithm { get; set; }
-        public string KeyId { get; set; }
-
-        public PublicKey ToPublicKey()
-        {
-            if (KeyType.StartsWith("HS"))
-            {
-                return new HSPublicKey(this);
-            }
-
-            if (KeyType.StartsWith("RS"))
-            {
-                return new RSPublicKey(this);
+                return new RSASigningKey(this);
             }
 
             throw new InvalidOperationException("Invalid key type");

@@ -46,28 +46,28 @@ namespace IdentityModel.HttpSigning
             public const string KeyTypeProperty = "kty";
             public const string AlgorithmProperty = "alg";
             public const string KeyIdProperty = "kid";
-        }
 
-        public class HS
-        {
-            public static readonly string[] Algorithms = new string[]
+            public class Symmetric
             {
+                public static readonly string[] Algorithms = new string[]
+                {
                 "HS256", "HS384", "HS512"
-            };
+                };
 
-            public const string KeyType = "oct";
-            public const string KeyProperty = "k";
-        }
+                public const string KeyType = "oct";
+                public const string KeyProperty = "k";
+            }
 
-        public class RS
-        {
-            public static readonly string[] Algorithms = new string[]
+            public class RSA
             {
+                public static readonly string[] Algorithms = new string[]
+                {
                 "RS256", "RS384", "RS512"
-            };
-            public const string KeyType = "RSA";
-            public const string ModulusProperty = "n";
-            public const string ExponentProperty = "e";
+                };
+                public const string KeyType = "RSA";
+                public const string ModulusProperty = "n";
+                public const string ExponentProperty = "e";
+            }
         }
     }
 }

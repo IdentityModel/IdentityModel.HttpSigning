@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Confirmation\CnfParser.cs" />
-    <Compile Include="Confirmation\PublicKeys.cs" />
+    <Compile Include="Confirmation\SigningKeys.cs" />
     <Compile Include="Decoded\DecodedList.cs" />
     <Compile Include="Encoding\EncodingHeaderList.cs" />
     <Compile Include="Encoding\EncodingList.cs" />
