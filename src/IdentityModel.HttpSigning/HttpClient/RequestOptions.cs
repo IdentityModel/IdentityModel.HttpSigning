@@ -90,10 +90,9 @@ namespace IdentityModel.HttpSigning
                 from h in request.Headers
                 from v in h.Value
                 where RequestHeadersToSign.Contains(h.Key)
-                orderby v
                 select new KeyValuePair<string, string>(h.Key, v);
 
-            return list;
+            return list.OrderBy(x => x.Value, StringComparer.OrdinalIgnoreCase);
         }
     }
 }
