@@ -22,19 +22,6 @@ namespace IdentityModel.HttpSigning.Tests
             Assert.Throws<ArgumentException>(() => new EncodingList(new List<KeyValuePair<string, string>>(), "-", ",", false));
         }
 
-        [Fact]
-        public void ToEncodedArray_should_emit_correct_array_length_and_item_types()
-        {
-            var items = new List<KeyValuePair<string, string>>();
-            items.Add(new KeyValuePair<string, string>("a", "apple"));
-            var subject = new EncodingList(items, "-", ",", false);
-
-            var result = subject.ToEncodedArray();
-            result.Length.Should().Be(2);
-            result[0].GetType().Should().BeAssignableTo<IEnumerable<string>>();
-            result[1].GetType().Should().Be<string>();
-        }
-
         [Theory]
         [InlineData(new string[] { "a" }, new string[] { "apple" })]
         [InlineData(new string[] { "a", "b" }, new string[] { "apple", "banana" })]
@@ -104,11 +91,9 @@ namespace IdentityModel.HttpSigning.Tests
                 items.Add(new KeyValuePair<string, string>(keys[i], values[i]));
             }
             var subject = new EncodingList(items, "-", ",", false);
-            var result = subject.ToEncodedArray();
-            var resultKeys = (IEnumerable<string>)result[0];
-
-            resultKeys.Count().Should().Be(keys.Length);
-            resultKeys.Should().ContainInOrder(keys);
+            var result = subject.Encode();
+            result.Keys.Count().Should().Be(keys.Length);
+            result.Keys.Should().ContainInOrder(keys);
         }
 
         [Theory]
@@ -124,10 +109,8 @@ namespace IdentityModel.HttpSigning.Tests
                 items.Add(new KeyValuePair<string, string>(keys[i], values[i]));
             }
             var subject = new EncodingList(items, "-", ",", false);
-            var result = subject.ToEncodedArray();
-
-            var resultValue = (string)result[1];
-            resultValue.Should().Be(expected);
+            var result = subject.Encode();
+            result.HashedValue.Should().Be(expected);
         }
     }
 }

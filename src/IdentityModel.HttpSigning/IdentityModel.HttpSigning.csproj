@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IdentityModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\IdentityModel.1.9.0\lib\net45\IdentityModel.dll</HintPath>
+      <HintPath>..\..\packages\IdentityModel.1.9.1\lib\net45\IdentityModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="jose-jwt, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -56,10 +56,10 @@
   <ItemGroup>
     <Compile Include="Confirmation\CnfParser.cs" />
     <Compile Include="Confirmation\SigningKeys.cs" />
-    <Compile Include="Decoded\DecodedList.cs" />
+    <Compile Include="Encoded\EncodedList.cs" />
     <Compile Include="Encoding\EncodingHeaderList.cs" />
     <Compile Include="Encoding\EncodingList.cs" />
-    <Compile Include="Decoded\DecodedParameters.cs" />
+    <Compile Include="Encoded\EncodedParameters.cs" />
     <Compile Include="Encoding\EncodingQueryParameters.cs" />
     <Compile Include="HttpClient\HttpRequestMessageExtensions.cs" />
     <Compile Include="HttpSigningConstants.cs" />

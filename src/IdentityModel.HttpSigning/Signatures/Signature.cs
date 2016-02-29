@@ -23,10 +23,11 @@ namespace IdentityModel.HttpSigning
         {
             if (payload == null) throw new ArgumentNullException("payload");
 
-            return JWT.Encode(payload.ToEncodedDictionary(), _key, _alg);
+            var encodedPayload = payload.Encode();
+            return JWT.Encode(encodedPayload.Encode(), _key, _alg);
         }
 
-        public DecodedParameters Verify(string token)
+        public EncodedParameters Verify(string token)
         {
             if (token == null) throw new ArgumentNullException("token");
 
@@ -35,7 +36,7 @@ namespace IdentityModel.HttpSigning
                 var json = JWT.Decode(token, _key);
                 if (json == null) return null;
 
-                return new DecodedParameters(json);
+                return EncodedParameters.FromJson(json);
             }
             catch
             {

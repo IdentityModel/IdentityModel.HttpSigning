@@ -49,10 +49,9 @@ namespace IdentityModel.HttpSigning.Tests
             subject.Keys.Should().ContainInOrder(new string[] { "content-type", "etag" });
             subject.Value.Should().Be("content-type: application/json" + '\n' + "etag: 742-3u8f34-3r2nvv3");
 
-            var result = subject.ToEncodedArray();
-            var resultValue = (string)result[1];
-            //resultValue.Should().Be("P6z5XN4tTzHkfwe3XO1YvVUIurSuhvh_UG10N_j-aGs");
-            resultValue.Should().Be("bZA981YJBrPlIzOvplbu3e7ueREXXr38vSkxIBYOaxI");
+            var result = subject.Encode();
+            //result.HashedValue.Should().Be("P6z5XN4tTzHkfwe3XO1YvVUIurSuhvh_UG10N_j-aGs");
+            result.HashedValue.Should().Be("bZA981YJBrPlIzOvplbu3e7ueREXXr38vSkxIBYOaxI");
         }
     }
 }

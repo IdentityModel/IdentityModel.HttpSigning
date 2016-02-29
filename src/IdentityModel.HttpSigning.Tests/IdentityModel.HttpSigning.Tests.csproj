@@ -42,7 +42,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="IdentityModel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\IdentityModel.1.9.0\lib\net45\IdentityModel.dll</HintPath>
+      <HintPath>..\..\packages\IdentityModel.1.9.1\lib\net45\IdentityModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="jose-jwt, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -84,9 +84,9 @@
     <Compile Include="Confirmation\JwkTests.cs" />
     <Compile Include="Confirmation\SigningKeyTests.cs" />
     <Compile Include="Encoding\EncodingHeaderListTests.cs" />
-    <Compile Include="Decoded\DecodedListTests.cs" />
+    <Compile Include="Encoded\EncodedListTests.cs" />
     <Compile Include="Encoding\EncodingListTests.cs" />
-    <Compile Include="Decoded\DecodedParametersTests.cs" />
+    <Compile Include="Encoded\EncodedParametersTests.cs" />
     <Compile Include="Encoding\EncodingQueryParametersTests.cs" />
     <Compile Include="HttpClient\HttpRequestMessageExtensionsTests.cs" />
     <Compile Include="HttpClient\HttpSigningMessageHandlerTests.cs" />

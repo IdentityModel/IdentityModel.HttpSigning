@@ -62,17 +62,13 @@ namespace IdentityModel.HttpSigning
         public IEnumerable<string> Keys { get; private set; }
         public string Value { get; private set; }
 
-        public object[] ToEncodedArray()
+        public EncodedList Encode()
         {
             var bytes = Encoding.ASCII.GetBytes(Value);
             var hash = SHA256.Create().ComputeHash(bytes);
             var value = Base64Url.Encode(hash);
 
-            return new object[]
-            {
-                Keys,
-                value
-            };
+            return new EncodedList(Keys, value);
         }
     }
 }

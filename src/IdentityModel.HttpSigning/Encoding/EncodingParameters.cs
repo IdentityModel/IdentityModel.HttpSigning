@@ -34,59 +34,42 @@ namespace IdentityModel.HttpSigning
         public IList<KeyValuePair<string, string>> RequestHeaders { get; set; }
         public byte[] Body { get; set; }
 
-        public Dictionary<string, object> ToEncodedDictionary()
+        public EncodedParameters Encode()
         {
-            var value = new Dictionary<string, object>();
-
-            value.Add(HttpSigningConstants.SignedObjectParameterNames.AccessToken, AccessToken);
-            value.Add(HttpSigningConstants.SignedObjectParameterNames.TimeStamp, TimeStamp.ToEpochTime());
+            var result = new EncodedParameters(AccessToken);
+            result.TimeStamp = TimeStamp.ToEpochTime();
 
             if (HttpMethod != null)
             {
-                value.Add(HttpSigningConstants.SignedObjectParameterNames.HttpMethod, HttpMethod.Method);
+                result.HttpMethod = HttpMethod.Method;
             }
-
-            if (Host != null)
-            {
-                value.Add(HttpSigningConstants.SignedObjectParameterNames.Host, Host);
-            }
-
-            if (UrlPath != null)
-            {
-                value.Add(HttpSigningConstants.SignedObjectParameterNames.UrlPath, UrlPath);
-            }
+            result.Host = Host;
+            result.UrlPath = UrlPath;   
 
             if (QueryParameters != null && QueryParameters.Any())
             {
                 var query = new EncodingQueryParameters(QueryParameters);
-                var array = query.ToEncodedArray();
-                value.Add(HttpSigningConstants.SignedObjectParameterNames.HashedQueryParameters, array);
+                result.QueryParameters = query.Encode();
             }
 
             if (RequestHeaders != null && RequestHeaders.Any())
             {
                 var headers = new EncodingHeaderList(RequestHeaders);
-                var array = headers.ToEncodedArray();
-                value.Add(HttpSigningConstants.SignedObjectParameterNames.HashedRequestHeaders, array);
+                result.RequestHeaders = headers.Encode();
             }
 
             if (Body != null)
             {
-                value.Add(HttpSigningConstants.SignedObjectParameterNames.HashedRequestBody, CalculateBodyHash());
+                result.BodyHash = CalculateBodyHash();
             }
 
-            return value;
+            return result;
         }
 
         string CalculateBodyHash()
         {
             var hash = SHA256.Create().ComputeHash(Body);
             return Jose.Base64Url.Encode(hash);
-        }
-
-        public bool IsSame(EncodingParameters other)
-        {
-            return false;
         }
     }
 }

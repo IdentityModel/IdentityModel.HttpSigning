@@ -50,9 +50,8 @@ namespace IdentityModel.HttpSigning.Tests
             subject.Keys.Should().ContainInOrder(new string[] { "b", "a", "c" });
             subject.Value.Should().Be("b=bar&a=foo&c=duck");
 
-            var result = subject.ToEncodedArray();
-            var resultValue = (string)result[1];
-            resultValue.Should().Be("u4LgkGUWhP9MsKrEjA4dizIllDXluDku6ZqCeyuR-JY");
+            var result = subject.Encode();
+            result.HashedValue.Should().Be("u4LgkGUWhP9MsKrEjA4dizIllDXluDku6ZqCeyuR-JY");
         }
     }
 }

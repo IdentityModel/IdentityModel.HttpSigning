@@ -11,6 +11,7 @@ using Xunit;
 using FluentAssertions;
 using IdentityModel.HttpSigning;
 using System.Net.Http;
+using System.Security.Cryptography;
 
 namespace IdentityModel.HttpSigning.Tests
 {
@@ -26,99 +27,90 @@ namespace IdentityModel.HttpSigning.Tests
         }
 
         [Fact]
-        public void encoding_should_contain_basic_values()
+        public void encode_should_capture_access_token_and_timestamp()
         {
-            var now = new DateTimeOffset(new DateTime(2016, 2, 3, 4, 5, 6));
-            _subject.TimeStamp = now;
+            var subject = new EncodingParameters("token");
+            subject.AccessToken.Should().Be("token");
 
-            var values = _subject.ToEncodedDictionary();
+            var now = DateTimeOffset.UtcNow;
+            subject.TimeStamp = now;
 
-            values.Keys.Count.Should().Be(2);
-            values.ContainsKey("at").Should().BeTrue();
-            values["at"].Should().Be("abc");
-            values.ContainsKey("ts").Should().BeTrue();
-            values["ts"].Should().Be(now.ToEpochTime());
+            var result = subject.Encode();
+            result.AccessToken.Should().Be("token");
+            result.TimeStamp.Should().Be(now.ToEpochTime());
+            result.HttpMethod.Should().BeNull();
+            result.Host.Should().BeNull();
+            result.UrlPath.Should().BeNull();
+            result.QueryParameters.Should().BeNull();
+            result.RequestHeaders.Should().BeNull();
+            result.BodyHash.Should().BeNull();
         }
 
         [Fact]
-        public void encoding_should_emit_http_method()
+        public void encode_should_capture_method()
         {
-            _subject.HttpMethod = HttpMethod.Post;
+            var subject = new EncodingParameters("token");
+            subject.HttpMethod = HttpMethod.Put;
 
-            var values = _subject.ToEncodedDictionary();
-
-            values.ContainsKey("m").Should().BeTrue();
-            values["m"].Should().Be("POST");
+            var result = subject.Encode();
+            result.HttpMethod.Should().Be("PUT");
         }
 
         [Fact]
-        public void encoding_should_emit_host()
+        public void encode_should_capture_host()
         {
-            _subject.Host = "localhost:12345";
+            var subject = new EncodingParameters("token");
+            subject.Host = "foo.com";
 
-            var values = _subject.ToEncodedDictionary();
-
-            values.ContainsKey("u").Should().BeTrue();
-            values["u"].Should().Be("localhost:12345");
+            var result = subject.Encode();
+            result.Host.Should().Be("foo.com");
         }
 
         [Fact]
-        public void encoding_should_emit_url_path()
+        public void encode_should_capture_path()
         {
-            _subject.UrlPath = "/foo";
+            var subject = new EncodingParameters("token");
+            subject.UrlPath = "/path";
 
-            var values = _subject.ToEncodedDictionary();
-
-            values.ContainsKey("p").Should().BeTrue();
-            values["p"].Should().Be("/foo");
+            var result = subject.Encode();
+            result.UrlPath.Should().Be("/path");
         }
 
         [Fact]
-        public void encoding_should_emit_query_params()
+        public void encode_should_capture_query()
         {
-            _subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar1"));
-            _subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar2"));
+            var subject = new EncodingParameters("token");
+            subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar1"));
+            subject.QueryParameters.Add(new KeyValuePair<string, string>("foo", "bar2"));
 
-            var values = _subject.ToEncodedDictionary();
-
-            values.ContainsKey("q").Should().BeTrue();
-            values["q"].Should().BeAssignableTo<object[]>();
-            var parts = (object[])values["q"];
-            var keys = (IEnumerable<string>)parts[0];
-            keys.Count().Should().Be(2);
-            keys.Should().ContainInOrder(new string[] { "foo", "foo" });
-            var value = (string)parts[1];
-            value.Should().Be("EgePUeakH8URmSH3yz8zE39c0r4kYVYsuQRSZa_MdvQ");
+            var result = subject.Encode();
+            result.QueryParameters.Should().NotBeNull();
+            result.QueryParameters.Keys.Should().ContainInOrder(new string[] { "foo", "foo" });
+            result.QueryParameters.HashedValue.Should().Be("EgePUeakH8URmSH3yz8zE39c0r4kYVYsuQRSZa_MdvQ");
         }
 
         [Fact]
-        public void encoding_should_emit_header_list()
+        public void encode_should_capture_headers()
         {
-            _subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar1"));
-            _subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar2"));
+            var subject = new EncodingParameters("token");
+            subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar1"));
+            subject.RequestHeaders.Add(new KeyValuePair<string, string>("foo", "bar2"));
 
-            var values = _subject.ToEncodedDictionary();
-
-            values.ContainsKey("h").Should().BeTrue();
-            values["h"].Should().BeAssignableTo<object[]>();
-            var parts = (object[])values["h"];
-            var keys = (IEnumerable<string>)parts[0];
-            keys.Count().Should().Be(2);
-            keys.Should().ContainInOrder(new string[] { "foo", "foo" });
-            var value = (string)parts[1];
-            value.Should().Be("trcKLrzChz2G8_T50KpExyZ9DTfcsMTXsGGd3YwftLc");
+            var result = subject.Encode();
+            result.RequestHeaders.Should().NotBeNull();
+            result.RequestHeaders.Keys.Should().ContainInOrder(new string[] { "foo", "foo" });
+            result.RequestHeaders.HashedValue.Should().Be("trcKLrzChz2G8_T50KpExyZ9DTfcsMTXsGGd3YwftLc");
         }
 
         [Fact]
-        public void encoding_should_emit_body()
+        public void encode_should_capture_body()
         {
-            _subject.Body = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
+            var subject = new EncodingParameters("token");
+            subject.Body = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
 
-            var values = _subject.ToEncodedDictionary();
-
-            values.ContainsKey("b").Should().BeTrue();
-            var body = (string)values["b"];
-            body.Should().Be("vnPfBFvKBXMv9S6m1FMSeSi1VLnnmqYXGr4xk9ImCp8");
+            var result = subject.Encode();
+            result.BodyHash.Should().Be("vnPfBFvKBXMv9S6m1FMSeSi1VLnnmqYXGr4xk9ImCp8");
         }
+
     }
 }
