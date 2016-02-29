@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,45 +42,16 @@ namespace IdentityModel.HttpSigning
                 parameters.UrlPath = request.RequestUri.AbsolutePath;
             }
 
-            var query = request.RequestUri.ParseQueryString();
-
-            var queryParamsToSign = QueryParametersToSign;
-            if (SignAllQueryParameters)
+            var queryParamsToSign = GetQueryParamsToSign(request.RequestUri);
+            foreach (var item in queryParamsToSign)
             {
-                queryParamsToSign = query.Keys.Cast<string>();
+                parameters.QueryParameters.Add(item);
             }
 
-            if (queryParamsToSign != null && queryParamsToSign.Any())
+            var headersToSign = GetRequestHeadersToSign(request);
+            foreach(var item in headersToSign)
             {
-                foreach (var key in queryParamsToSign)
-                {
-                    var value = query[key];
-                    if (value != null)
-                    {
-                        // warning: if the param itself has a "," then this is incorrect
-                        // since at this point the Uri is not escaped
-                        var values = value.Split(',');
-                        foreach (var val in values)
-                        {
-                            parameters.QueryParameters.Add(new KeyValuePair<string, string>(key, val));
-                        }
-                    }
-                }
-            }
-
-            if (RequestHeadersToSign != null && RequestHeadersToSign.Any())
-            {
-                foreach (var key in RequestHeadersToSign)
-                {
-                    IEnumerable<string> values;
-                    if (request.Headers.TryGetValues(key, out values))
-                    {
-                        foreach (var value in values)
-                        {
-                            parameters.RequestHeaders.Add(new KeyValuePair<string, string>(key, value));
-                        }
-                    }
-                }
+                parameters.RequestHeaders.Add(item);
             }
 
             if (SignBody)
@@ -88,6 +60,40 @@ namespace IdentityModel.HttpSigning
             }
 
             return parameters;
+        }
+
+        private IEnumerable<KeyValuePair<string, string>> GetQueryParamsToSign(Uri url)
+        {
+            if (!SignAllQueryParameters && 
+                (QueryParametersToSign == null || !QueryParametersToSign.Any()))
+            {
+                return Enumerable.Empty<KeyValuePair<string, string>>();
+            }
+
+            IEnumerable<KeyValuePair<string, string>> query = new FormDataCollection(url);
+            if (SignAllQueryParameters == false)
+            {
+                query = query.Where(x => QueryParametersToSign.Contains(x.Key));
+            }
+
+            return query.OrderBy(x => x.Value, StringComparer.OrdinalIgnoreCase);
+        }
+
+        private IEnumerable<KeyValuePair<string, string>> GetRequestHeadersToSign(HttpRequestMessage request)
+        {
+            if (RequestHeadersToSign == null || !RequestHeadersToSign.Any())
+            {
+                return Enumerable.Empty<KeyValuePair<string, string>>();
+            }
+
+            var list =
+                from h in request.Headers
+                from v in h.Value
+                where RequestHeadersToSign.Contains(h.Key)
+                orderby v
+                select new KeyValuePair<string, string>(h.Key, v);
+
+            return list;
         }
     }
 }
