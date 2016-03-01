@@ -23,9 +23,10 @@ namespace IdentityModel.HttpSigning
         {
             if (list == null) throw new ArgumentNullException("list");
 
-            object[] arr = list as object[];
-            if (arr == null) throw new ArgumentException("list is not an array");
+            var collection = list as IEnumerable<object>;
+            if (collection == null) throw new ArgumentException("list is not an array");
 
+            object[] arr = collection.ToArray();
             Decode(arr);
         }
 
@@ -62,10 +63,15 @@ namespace IdentityModel.HttpSigning
         {
             if (arr.Length != 2) throw new ArgumentException("list does not have exactly two items");
 
-            var keys = arr[0] as IEnumerable<string>;
-            if (keys == null) throw new ArgumentException("first item in list is not array of strings");
+            var items = arr[0] as IEnumerable<object>;
+            if (items == null) throw new ArgumentException("first item in list is not array of strings");
 
-            var value = arr[1] as string;
+            var keys = items.Select(x => Convert.ToString(x)).ToArray();
+            if (keys.Length != items.Count()) throw new ArgumentException("first item in list is not array of strings");
+
+            if (arr[1] == null) throw new ArgumentException("second item in list is not a string");
+
+            var value = Convert.ToString(arr[1]);
             if (value == null) throw new ArgumentException("second item in list is not a string");
 
             Keys = keys;

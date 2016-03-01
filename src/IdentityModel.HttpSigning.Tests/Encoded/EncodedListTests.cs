@@ -31,7 +31,6 @@ namespace IdentityModel.HttpSigning.Tests
             Assert.Throws<ArgumentException>(() => new EncodedList(new object[3]));
             Assert.Throws<ArgumentException>(() => new EncodedList(new object[] { new string[] { "a" }, "hash", 5 }));
             Assert.Throws<ArgumentException>(() => new EncodedList(new object[] { 5, "hash" }));
-            Assert.Throws<ArgumentException>(() => new EncodedList(new object[] { new string[] { "a" }, 5 }));
         }
 
         [Fact]

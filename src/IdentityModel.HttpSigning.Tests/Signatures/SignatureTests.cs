@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using Jose;
+using Newtonsoft.Json;
 
 namespace IdentityModel.HttpSigning.Tests
 {

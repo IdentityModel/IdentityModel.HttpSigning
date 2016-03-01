@@ -28,6 +28,11 @@ namespace IdentityModel.HttpSigning
             Decode(values);
         }
 
+        static JsonSerializerSettings _jsonSettings = new JsonSerializerSettings()
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
         public static EncodedParameters FromJson(string json)
         {
             if (String.IsNullOrWhiteSpace(json)) throw new ArgumentNullException("json");
@@ -35,7 +40,7 @@ namespace IdentityModel.HttpSigning
             Dictionary<string, object> values = null;
             try
             {
-                values = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
+                values = JsonConvert.DeserializeObject<Dictionary<string, object>>(json, _jsonSettings);
             }
             catch
             {

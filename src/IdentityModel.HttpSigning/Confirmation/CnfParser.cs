@@ -13,6 +13,11 @@ namespace IdentityModel.HttpSigning
 {
     public class CnfParser
     {
+        static JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
         public static Jwk Parse(string json)
         {
             if (String.IsNullOrWhiteSpace(json))
@@ -20,7 +25,7 @@ namespace IdentityModel.HttpSigning
                 throw new ArgumentNullException("json");
             }
 
-            return JsonConvert.DeserializeObject<Jwk>(json);
+            return JsonConvert.DeserializeObject<Jwk>(json, _jsonSettings);
         }
     }
 }
