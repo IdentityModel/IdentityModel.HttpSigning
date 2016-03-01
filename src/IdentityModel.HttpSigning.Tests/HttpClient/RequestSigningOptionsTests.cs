@@ -11,7 +11,7 @@ namespace IdentityModel.HttpSigning.Tests
 {
     public class RequestOptionsTests
     {
-        RequestOptions _subject = new RequestOptions();
+        RequestSigningOptions _subject = new RequestSigningOptions();
 
         [Fact]
         public async Task no_access_token_should_not_create_parameters()

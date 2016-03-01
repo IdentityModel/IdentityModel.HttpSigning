@@ -93,7 +93,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Encoding\EncodingParametersTests.cs" />
     <Compile Include="Signatures\SignatureTests.cs" />
-    <Compile Include="HttpClient\RequestOptionsTests.cs" />
+    <Compile Include="HttpClient\RequestSigningOptionsTests.cs" />
     <Compile Include="HttpClient\StubHttpMessageHandler.cs" />
   </ItemGroup>
   <ItemGroup>

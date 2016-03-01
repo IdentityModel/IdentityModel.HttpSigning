@@ -70,7 +70,7 @@
     <Compile Include="Signatures\HSSignatures.cs" />
     <Compile Include="Signatures\Signature.cs" />
     <Compile Include="Encoding\EncodingParameters.cs" />
-    <Compile Include="HttpClient\RequestOptions.cs" />
+    <Compile Include="HttpClient\RequestSigningOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\default.licenseheader">
