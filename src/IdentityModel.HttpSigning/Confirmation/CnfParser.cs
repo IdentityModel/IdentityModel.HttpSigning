@@ -11,6 +11,26 @@ using System.Threading.Tasks;
 
 namespace IdentityModel.HttpSigning
 {
+    public class Cnf
+    {
+        static JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        };
+
+        public Cnf(Jwk jwk)
+        {
+            this.jwk = jwk;
+        }
+
+        public Jwk jwk { get; set; }
+
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this, _jsonSettings);
+        }
+    }
+
     public class CnfParser
     {
         static JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
@@ -25,7 +45,8 @@ namespace IdentityModel.HttpSigning
                 throw new ArgumentNullException("json");
             }
 
-            return JsonConvert.DeserializeObject<Jwk>(json, _jsonSettings);
+            var cnf = JsonConvert.DeserializeObject<Cnf>(json, _jsonSettings);
+            return cnf?.jwk;
         }
     }
 }

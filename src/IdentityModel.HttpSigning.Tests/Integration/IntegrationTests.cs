@@ -27,12 +27,13 @@ namespace IdentityModel.HttpSigning.Tests.Integration
 
             var token = signature.Sign(payload);
 
-            var cnfJson = JsonConvert.SerializeObject(new Jwk
-            {
-                kty = "oct",
-                alg = "HS256",
-                k = Base64Url.Encode(_symmetricKey)
-            });
+            var cnfJson = new Cnf(
+                new Jwk
+                {
+                    kty = "oct",
+                    alg = "HS256",
+                    k = Base64Url.Encode(_symmetricKey)
+                }).ToJson();
             var jwk = CnfParser.Parse(cnfJson);
             var key = jwk.ToPublicKey();
             signature = key.ToSignature();
@@ -53,12 +54,13 @@ namespace IdentityModel.HttpSigning.Tests.Integration
 
             var token = signature.Sign(payload);
 
-            var cnfJson = JsonConvert.SerializeObject(new Jwk
-            {
-                kty = "oct",
-                alg = "HS256",
-                k = Base64Url.Encode(_symmetricKey)
-            });
+            var cnfJson = new Cnf(
+               new Jwk
+               {
+                   kty = "oct",
+                   alg = "HS256",
+                   k = Base64Url.Encode(_symmetricKey)
+               }).ToJson();
             var jwk = CnfParser.Parse(cnfJson);
             var key = jwk.ToPublicKey();
             signature = key.ToSignature();

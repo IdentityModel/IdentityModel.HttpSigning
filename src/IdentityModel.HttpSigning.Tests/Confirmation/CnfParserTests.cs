@@ -23,10 +23,28 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
         }
 
         [Fact]
-        public void parser_should_read_json()
+        public void parser_should_return_cnf_property_from_json()
         {
             var jwk = CnfParser.Parse("{}");
+            jwk.Should().BeNull();
+        }
+
+        [Fact]
+        public void parser_should_read_proper_cnf_structure()
+        {
+            var jwk = new Jwk
+            {
+                kty = "oct",
+                alg = "HS256",
+                k = "123"
+            };
+
+            var json = new Cnf(jwk).ToJson();
+            jwk = CnfParser.Parse(json);
             jwk.Should().NotBeNull();
+            jwk.kty.Should().Be("oct");
+            jwk.alg.Should().Be("HS256");
+            jwk.k.Should().Be("123");
         }
     }
 }
