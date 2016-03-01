@@ -16,7 +16,7 @@ namespace IdentityModel.HttpSigning
         {
             public const string AccessToken = "at";
             public const string TimeStamp = "ts";
-            public const string HttpMethod = "m";
+            public const string Method = "m";
             public const string Host = "u";
             public const string Path = "p";
             public const string HashedQueryParameters = "q";

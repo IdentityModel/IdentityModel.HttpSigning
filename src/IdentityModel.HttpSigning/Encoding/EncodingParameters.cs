@@ -27,7 +27,7 @@ namespace IdentityModel.HttpSigning
 
         public string AccessToken { get; private set; }
         public DateTimeOffset TimeStamp { get; set; }
-        public HttpMethod HttpMethod { get; set; }
+        public HttpMethod Method { get; set; }
         public string Host { get; set; }
         public string Path { get; set; }
         public IList<KeyValuePair<string, string>> QueryParameters { get; set; }
@@ -39,9 +39,9 @@ namespace IdentityModel.HttpSigning
             var result = new EncodedParameters(AccessToken);
             result.TimeStamp = TimeStamp.ToEpochTime();
 
-            if (HttpMethod != null)
+            if (Method != null)
             {
-                result.HttpMethod = HttpMethod.Method;
+                result.Method = Method.Method;
             }
             result.Host = Host;
             result.Path = Path;   

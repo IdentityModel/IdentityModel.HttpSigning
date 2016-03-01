@@ -38,7 +38,7 @@ namespace IdentityModel.HttpSigning.Tests
             var result = subject.Encode();
             result.AccessToken.Should().Be("token");
             result.TimeStamp.Should().Be(now.ToEpochTime());
-            result.HttpMethod.Should().BeNull();
+            result.Method.Should().BeNull();
             result.Host.Should().BeNull();
             result.Path.Should().BeNull();
             result.QueryParameters.Should().BeNull();
@@ -50,10 +50,10 @@ namespace IdentityModel.HttpSigning.Tests
         public void encode_should_capture_method()
         {
             var subject = new EncodingParameters("token");
-            subject.HttpMethod = HttpMethod.Put;
+            subject.Method = HttpMethod.Put;
 
             var result = subject.Encode();
-            result.HttpMethod.Should().Be("PUT");
+            result.Method.Should().Be("PUT");
         }
 
         [Fact]

@@ -47,7 +47,7 @@ namespace IdentityModel.HttpSigning
 
         public string AccessToken { get; private set; }
         public long? TimeStamp { get; set; }
-        public string HttpMethod { get; set; }
+        public string Method { get; set; }
         public string Host { get; set; }
         public string Path { get; set; }
         public EncodedList QueryParameters { get; set; }
@@ -59,7 +59,7 @@ namespace IdentityModel.HttpSigning
             if (other == null) return false;
 
             if (AccessToken != other.AccessToken) return false;
-            if (HttpMethod != other.HttpMethod) return false;
+            if (Method != other.Method) return false;
             if (Host != other.Host) return false;
             if (Path != other.Path) return false;
             if (BodyHash != other.BodyHash) return false;
@@ -86,9 +86,9 @@ namespace IdentityModel.HttpSigning
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.TimeStamp, TimeStamp.Value);
             }
 
-            if (HttpMethod != null)
+            if (Method != null)
             {
-                value.Add(HttpSigningConstants.SignedObjectParameterNames.HttpMethod, HttpMethod);
+                value.Add(HttpSigningConstants.SignedObjectParameterNames.Method, Method);
             }
 
             if (Host != null)
@@ -127,7 +127,7 @@ namespace IdentityModel.HttpSigning
             var ts = GetNumber(values, HttpSigningConstants.SignedObjectParameterNames.TimeStamp);
             if (ts != null) TimeStamp = ts;
 
-            HttpMethod = GetString(values, HttpSigningConstants.SignedObjectParameterNames.HttpMethod);
+            Method = GetString(values, HttpSigningConstants.SignedObjectParameterNames.Method);
             Host = GetString(values, HttpSigningConstants.SignedObjectParameterNames.Host);
             Path = GetString(values, HttpSigningConstants.SignedObjectParameterNames.Path);
             QueryParameters = GetDecodedList(values, HttpSigningConstants.SignedObjectParameterNames.HashedQueryParameters);

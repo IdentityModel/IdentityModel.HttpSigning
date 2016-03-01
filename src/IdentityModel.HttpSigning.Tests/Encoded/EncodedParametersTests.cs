@@ -45,7 +45,7 @@ namespace IdentityModel.HttpSigning.Tests
         public void encoding_should_emit_http_method()
         {
             var subject = new EncodedParameters("abc");
-            subject.HttpMethod = "POST";
+            subject.Method = "POST";
 
             var values = subject.Encode();
 
@@ -199,7 +199,7 @@ namespace IdentityModel.HttpSigning.Tests
                 { "m", "PUT" }
             };
             var subject = new EncodedParameters(values);
-            subject.HttpMethod.Should().Be("PUT");
+            subject.Method.Should().Be("PUT");
         }
 
         [Fact]
@@ -292,10 +292,10 @@ namespace IdentityModel.HttpSigning.Tests
             var subject = new EncodedParameters("token");
             var other = new EncodedParameters("token");
 
-            subject.HttpMethod = other.HttpMethod = "POST";
+            subject.Method = other.Method = "POST";
             subject.IsSame(other).Should().BeTrue();
 
-            other.HttpMethod = "GET";
+            other.Method = "GET";
             subject.IsSame(other).Should().BeFalse();
         }
 

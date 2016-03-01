@@ -10,7 +10,7 @@ namespace IdentityModel.HttpSigning
 {
     public class RequestOptions
     {
-        public bool SignHttpMethod { get; set; }
+        public bool SignMethod { get; set; }
         public bool SignHost { get; set; }
         public bool SignPath { get; set; }
         public bool SignAllQueryParameters { get; set; }
@@ -27,9 +27,9 @@ namespace IdentityModel.HttpSigning
 
             var parameters = new EncodingParameters(token);
 
-            if (SignHttpMethod)
+            if (SignMethod)
             {
-                parameters.HttpMethod = request.Method;
+                parameters.Method = request.Method;
             }
 
             if (SignHost)
