@@ -32,7 +32,7 @@ namespace IdentityModel.HttpSigning.Tests
             parameters.AccessToken.Should().Be("token");
             parameters.HttpMethod.Should().BeNull();
             parameters.Host.Should().BeNull();
-            parameters.UrlPath.Should().BeNull();
+            parameters.Path.Should().BeNull();
             parameters.QueryParameters.Should().BeNullOrEmpty();
             parameters.RequestHeaders.Should().BeNullOrEmpty();
             parameters.Body.Should().BeNull();
@@ -68,10 +68,10 @@ namespace IdentityModel.HttpSigning.Tests
             var request = new HttpRequestMessage(HttpMethod.Post, "http://foo.com/bar?x=1");
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("PoP", "token");
 
-            _subject.SignUrlPath = true;
+            _subject.SignPath = true;
             var parameters = await _subject.CreateEncodingParametersAsync(request);
 
-            parameters.UrlPath.Should().Be("/bar");
+            parameters.Path.Should().Be("/bar");
         }
 
         [Fact]

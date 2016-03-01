@@ -18,7 +18,7 @@ namespace IdentityModel.HttpSigning
             public const string TimeStamp = "ts";
             public const string HttpMethod = "m";
             public const string Host = "u";
-            public const string UrlPath = "p";
+            public const string Path = "p";
             public const string HashedQueryParameters = "q";
             public const string HashedRequestHeaders = "h";
             public const string HashedRequestBody = "b";

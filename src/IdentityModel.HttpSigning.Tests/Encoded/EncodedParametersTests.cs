@@ -69,7 +69,7 @@ namespace IdentityModel.HttpSigning.Tests
         public void encoding_should_emit_url_path()
         {
             var subject = new EncodedParameters("abc");
-            subject.UrlPath = "/foo";
+            subject.Path = "/foo";
 
             var values = subject.Encode();
 
@@ -223,7 +223,7 @@ namespace IdentityModel.HttpSigning.Tests
                 { "p", "/foo/bar" }
             };
             var subject = new EncodedParameters(values);
-            subject.UrlPath.Should().Be("/foo/bar");
+            subject.Path.Should().Be("/foo/bar");
         }
 
         [Fact]
@@ -318,10 +318,10 @@ namespace IdentityModel.HttpSigning.Tests
             var subject = new EncodedParameters("token");
             var other = new EncodedParameters("token");
 
-            subject.UrlPath = other.UrlPath = "/path";
+            subject.Path = other.Path = "/path";
             subject.IsSame(other).Should().BeTrue();
 
-            other.UrlPath = "/not_path";
+            other.Path = "/not_path";
             subject.IsSame(other).Should().BeFalse();
         }
 

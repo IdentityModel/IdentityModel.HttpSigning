@@ -29,7 +29,7 @@ namespace IdentityModel.HttpSigning
         public DateTimeOffset TimeStamp { get; set; }
         public HttpMethod HttpMethod { get; set; }
         public string Host { get; set; }
-        public string UrlPath { get; set; }
+        public string Path { get; set; }
         public IList<KeyValuePair<string, string>> QueryParameters { get; set; }
         public IList<KeyValuePair<string, string>> RequestHeaders { get; set; }
         public byte[] Body { get; set; }
@@ -44,7 +44,7 @@ namespace IdentityModel.HttpSigning
                 result.HttpMethod = HttpMethod.Method;
             }
             result.Host = Host;
-            result.UrlPath = UrlPath;   
+            result.Path = Path;   
 
             if (QueryParameters != null && QueryParameters.Any())
             {

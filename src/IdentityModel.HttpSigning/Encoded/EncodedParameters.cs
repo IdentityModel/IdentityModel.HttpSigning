@@ -49,7 +49,7 @@ namespace IdentityModel.HttpSigning
         public long? TimeStamp { get; set; }
         public string HttpMethod { get; set; }
         public string Host { get; set; }
-        public string UrlPath { get; set; }
+        public string Path { get; set; }
         public EncodedList QueryParameters { get; set; }
         public EncodedList RequestHeaders { get; set; }
         public string BodyHash { get; set; }
@@ -61,7 +61,7 @@ namespace IdentityModel.HttpSigning
             if (AccessToken != other.AccessToken) return false;
             if (HttpMethod != other.HttpMethod) return false;
             if (Host != other.Host) return false;
-            if (UrlPath != other.UrlPath) return false;
+            if (Path != other.Path) return false;
             if (BodyHash != other.BodyHash) return false;
 
             if (QueryParameters == null && other.QueryParameters != null) return false;
@@ -96,9 +96,9 @@ namespace IdentityModel.HttpSigning
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.Host, Host);
             }
 
-            if (UrlPath != null)
+            if (Path != null)
             {
-                value.Add(HttpSigningConstants.SignedObjectParameterNames.UrlPath, UrlPath);
+                value.Add(HttpSigningConstants.SignedObjectParameterNames.Path, Path);
             }
 
             if (QueryParameters != null)
@@ -129,7 +129,7 @@ namespace IdentityModel.HttpSigning
 
             HttpMethod = GetString(values, HttpSigningConstants.SignedObjectParameterNames.HttpMethod);
             Host = GetString(values, HttpSigningConstants.SignedObjectParameterNames.Host);
-            UrlPath = GetString(values, HttpSigningConstants.SignedObjectParameterNames.UrlPath);
+            Path = GetString(values, HttpSigningConstants.SignedObjectParameterNames.Path);
             QueryParameters = GetDecodedList(values, HttpSigningConstants.SignedObjectParameterNames.HashedQueryParameters);
             RequestHeaders = GetDecodedList(values, HttpSigningConstants.SignedObjectParameterNames.HashedRequestHeaders);
             BodyHash = GetString(values, HttpSigningConstants.SignedObjectParameterNames.HashedRequestBody);

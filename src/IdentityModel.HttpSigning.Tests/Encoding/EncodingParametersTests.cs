@@ -40,7 +40,7 @@ namespace IdentityModel.HttpSigning.Tests
             result.TimeStamp.Should().Be(now.ToEpochTime());
             result.HttpMethod.Should().BeNull();
             result.Host.Should().BeNull();
-            result.UrlPath.Should().BeNull();
+            result.Path.Should().BeNull();
             result.QueryParameters.Should().BeNull();
             result.RequestHeaders.Should().BeNull();
             result.BodyHash.Should().BeNull();
@@ -70,10 +70,10 @@ namespace IdentityModel.HttpSigning.Tests
         public void encode_should_capture_path()
         {
             var subject = new EncodingParameters("token");
-            subject.UrlPath = "/path";
+            subject.Path = "/path";
 
             var result = subject.Encode();
-            result.UrlPath.Should().Be("/path");
+            result.Path.Should().Be("/path");
         }
 
         [Fact]

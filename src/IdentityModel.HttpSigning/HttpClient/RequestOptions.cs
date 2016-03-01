@@ -12,7 +12,7 @@ namespace IdentityModel.HttpSigning
     {
         public bool SignHttpMethod { get; set; }
         public bool SignHost { get; set; }
-        public bool SignUrlPath { get; set; }
+        public bool SignPath { get; set; }
         public bool SignAllQueryParameters { get; set; }
         public IEnumerable<string> QueryParametersToSign { get; set; }
         public IEnumerable<string> RequestHeadersToSign { get; set; }
@@ -37,9 +37,9 @@ namespace IdentityModel.HttpSigning
                 parameters.Host = request.RequestUri.Host;
             }
 
-            if (SignUrlPath)
+            if (SignPath)
             {
-                parameters.UrlPath = request.RequestUri.AbsolutePath;
+                parameters.Path = request.RequestUri.AbsolutePath;
             }
 
             var queryParamsToSign = GetQueryParamsToSign(request.RequestUri);
