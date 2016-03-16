@@ -13,7 +13,7 @@ namespace IdentityModel.HttpSigning
         public static RSACryptoServiceProvider ToRSACryptoServiceProvider(this RSAParameters rsa)
         {
             var csp = new CspParameters();
-            //csp.Flags = CspProviderFlags.CreateEphemeralKey;
+            csp.Flags = CspProviderFlags.CreateEphemeralKey;
             csp.KeyNumber = (int)KeyNumber.Signature;
 
             var prov = new RSACryptoServiceProvider(2048, csp);
