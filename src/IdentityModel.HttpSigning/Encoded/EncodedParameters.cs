@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel.HttpSigning.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace IdentityModel.HttpSigning
 {
     public class EncodedParameters
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public EncodedParameters(string accessToken)
         {
             if (String.IsNullOrWhiteSpace(accessToken))
@@ -42,8 +45,9 @@ namespace IdentityModel.HttpSigning
             {
                 values = JsonConvert.DeserializeObject<Dictionary<string, object>>(json, _jsonSettings);
             }
-            catch
+            catch(Exception ex)
             {
+                Logger.ErrorException("Failed to deserialize JSON", ex);
                 throw new ArgumentException("Invalid JSON");
             }
 
@@ -63,19 +67,63 @@ namespace IdentityModel.HttpSigning
         {
             if (other == null) return false;
 
-            if (AccessToken != other.AccessToken) return false;
-            if (Method != other.Method) return false;
-            if (Host != other.Host) return false;
-            if (Path != other.Path) return false;
-            if (BodyHash != other.BodyHash) return false;
+            if (AccessToken != other.AccessToken)
+            {
+                Logger.Debug("AccessToken mismatch");
+                return false;
+            }
+            if (Method != other.Method)
+            {
+                Logger.Debug("Method mismatch");
+                return false;
+            }
+            if (Host != other.Host)
+            {
+                Logger.Debug("Host mismatch");
+                return false;
+            }
+            if (Path != other.Path)
+            {
+                Logger.Debug("Path mismatch");
+                return false;
+            }
+            if (BodyHash != other.BodyHash)
+            {
+                Logger.Debug("BodyHash mismatch");
+                return false;
+            }
 
-            if (QueryParameters == null && other.QueryParameters != null) return false;
-            if (QueryParameters != null && other.QueryParameters == null) return false;
-            if (QueryParameters != null && !QueryParameters.IsSame(other.QueryParameters)) return false;
+            if (QueryParameters == null && other.QueryParameters != null)
+            {
+                Logger.Debug("One QueryParameters is null, the other is not");
+                return false;
+            }
+            if (QueryParameters != null && other.QueryParameters == null)
+            {
+                Logger.Debug("One QueryParameters is null, the other is not");
+                return false;
+            }
+            if (QueryParameters != null && !QueryParameters.IsSame(other.QueryParameters))
+            {
+                Logger.Debug("QueryParameters mismatch");
+                return false;
+            }
 
-            if (RequestHeaders == null && other.RequestHeaders != null) return false;
-            if (RequestHeaders != null && other.RequestHeaders == null) return false;
-            if (RequestHeaders != null && !RequestHeaders.IsSame(other.RequestHeaders)) return false;
+            if (RequestHeaders == null && other.RequestHeaders != null)
+            {
+                Logger.Debug("One RequestHeaders is null, the other is not");
+                return false;
+            }
+            if (RequestHeaders != null && other.RequestHeaders == null)
+            {
+                Logger.Debug("One RequestHeaders is null, the other is not");
+                return false;
+            }
+            if (RequestHeaders != null && !RequestHeaders.IsSame(other.RequestHeaders))
+            {
+                Logger.Debug("RequestHeaders mismatch");
+                return false;
+            }
 
             return true;
         }

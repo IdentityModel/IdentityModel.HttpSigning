@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel.HttpSigning.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace IdentityModel.HttpSigning
 {
     public class EncodedList
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public EncodedList(IEnumerable<string> keys, string hashValue)
         {
             if (keys == null || !keys.Any()) throw new ArgumentNullException("keys");
@@ -40,11 +43,15 @@ namespace IdentityModel.HttpSigning
             var len = arr1.Length;
             if (arr1.Length != arr2.Length)
             {
+                Logger.Debug("Keys are not same length");
+
                 return false;
             }
 
             if (HashedValue != other.HashedValue)
             {
+                Logger.Debug("HashedValues do not match");
+
                 return false;
             }
 
@@ -52,6 +59,8 @@ namespace IdentityModel.HttpSigning
             {
                 if (arr1[i] != arr2[i])
                 {
+                    Logger.DebugFormat("Values at position {0} do not match", i);
+
                     return false;
                 }
             }
