@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdentityModel.HttpSigning.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -11,6 +12,8 @@ namespace IdentityModel.HttpSigning
 {
     public class HttpSigningMessageHandler : DelegatingHandler
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         private readonly Signature _signature;
         private readonly RequestSigningOptions _options;
 
@@ -40,8 +43,14 @@ namespace IdentityModel.HttpSigning
             var parameters = await _options.CreateEncodingParametersAsync(request);
             if (parameters != null)
             {
+                Logger.Debug("Encoding parameters recieved; signing and adding pop token");
+
                 var token = _signature.Sign(parameters);
                 request.AddPopToken(token);
+            }
+            else
+            {
+                Logger.Debug("No encoding parameters recieved; not adding pop token");
             }
         }
     }

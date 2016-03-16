@@ -18,8 +18,8 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
         [Fact]
         public void requires_json()
         {
-            Assert.Throws<ArgumentNullException>(() => CnfParser.Parse(null));
-            Assert.ThrowsAny<Exception>(() => CnfParser.Parse("not jwk json"));
+            CnfParser.Parse(null).Should().BeNull();
+            CnfParser.Parse("not jwk json").Should().BeNull();
         }
 
         [Fact]

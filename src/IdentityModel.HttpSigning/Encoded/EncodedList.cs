@@ -27,7 +27,11 @@ namespace IdentityModel.HttpSigning
             if (list == null) throw new ArgumentNullException("list");
 
             var collection = list as IEnumerable<object>;
-            if (collection == null) throw new ArgumentException("list is not an array");
+            if (collection == null)
+            {
+                Logger.Error("list is not an array");
+                throw new ArgumentException("list is not an array");
+            }
 
             object[] arr = collection.ToArray();
             Decode(arr);
@@ -44,14 +48,12 @@ namespace IdentityModel.HttpSigning
             if (arr1.Length != arr2.Length)
             {
                 Logger.Debug("Keys are not same length");
-
                 return false;
             }
 
             if (HashedValue != other.HashedValue)
             {
                 Logger.Debug("HashedValues do not match");
-
                 return false;
             }
 
@@ -60,7 +62,6 @@ namespace IdentityModel.HttpSigning
                 if (arr1[i] != arr2[i])
                 {
                     Logger.DebugFormat("Values at position {0} do not match", i);
-
                     return false;
                 }
             }
@@ -70,18 +71,38 @@ namespace IdentityModel.HttpSigning
 
         private void Decode(object[] arr)
         {
-            if (arr.Length != 2) throw new ArgumentException("list does not have exactly two items");
+            if (arr.Length != 2)
+            {
+                Logger.Error("list does not have exactly two items");
+                throw new ArgumentException("list does not have exactly two items");
+            }
 
             var items = arr[0] as IEnumerable<object>;
-            if (items == null) throw new ArgumentException("first item in list is not array of strings");
+            if (items == null)
+            {
+                Logger.Error("first item in list is not array of strings");
+                throw new ArgumentException("first item in list is not array of strings");
+            }
 
             var keys = items.Select(x => Convert.ToString(x)).ToArray();
-            if (keys.Length != items.Count()) throw new ArgumentException("first item in list is not array of strings");
+            if (keys.Length != items.Count())
+            {
+                Logger.Error("key count don't match item count");
+                throw new ArgumentException("key count don't match item count");
+            }
 
-            if (arr[1] == null) throw new ArgumentException("second item in list is not a string");
+            if (arr[1] == null)
+            {
+                Logger.Error("second item in list is not a string");
+                throw new ArgumentException("second item in list is not a string");
+            }
 
             var value = Convert.ToString(arr[1]);
-            if (value == null) throw new ArgumentException("second item in list is not a string");
+            if (value == null)
+            {
+                Logger.Error("second item in list is not a string");
+                throw new ArgumentException("second item in list is not a string");
+            }
 
             Keys = keys;
             HashedValue = value;

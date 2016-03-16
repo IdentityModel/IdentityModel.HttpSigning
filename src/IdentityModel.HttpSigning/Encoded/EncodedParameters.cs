@@ -136,36 +136,43 @@ namespace IdentityModel.HttpSigning
 
             if (TimeStamp != null)
             {
+                Logger.Debug("Encoding timestamp");
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.TimeStamp, TimeStamp.Value);
             }
 
             if (Method != null)
             {
+                Logger.Debug("Encoding method");
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.Method, Method);
             }
 
             if (Host != null)
             {
+                Logger.Debug("Encoding host");
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.Host, Host);
             }
 
             if (Path != null)
             {
+                Logger.Debug("Encoding path");
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.Path, Path);
             }
 
             if (QueryParameters != null)
             {
+                Logger.Debug("Encoding query params");
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.HashedQueryParameters, QueryParameters.Encode());
             }
 
             if (RequestHeaders != null)
             {
+                Logger.Debug("Encoding request headers");
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.HashedRequestHeaders, RequestHeaders.Encode());
             }
 
             if (BodyHash != null)
             {
+                Logger.Debug("Encoding body hash");
                 value.Add(HttpSigningConstants.SignedObjectParameterNames.HashedRequestBody, BodyHash);
             }
 
@@ -175,17 +182,36 @@ namespace IdentityModel.HttpSigning
         private void Decode(IDictionary<string, object> values)
         {
             AccessToken = GetString(values, HttpSigningConstants.SignedObjectParameterNames.AccessToken);
-            if (AccessToken == null) throw new ArgumentException(HttpSigningConstants.SignedObjectParameterNames.AccessToken + " value not present");
+            if (AccessToken == null)
+            {
+                Logger.Error(HttpSigningConstants.SignedObjectParameterNames.AccessToken + " value not present");
+                throw new ArgumentException(HttpSigningConstants.SignedObjectParameterNames.AccessToken + " value not present");
+            }
 
             var ts = GetNumber(values, HttpSigningConstants.SignedObjectParameterNames.TimeStamp);
-            if (ts != null) TimeStamp = ts;
+            if (ts != null)
+            {
+                Logger.Debug("Decoded Timestamp");
+                TimeStamp = ts;
+            }
 
             Method = GetString(values, HttpSigningConstants.SignedObjectParameterNames.Method);
+            if (Method != null) Logger.Debug("Decoded Method");
+
             Host = GetString(values, HttpSigningConstants.SignedObjectParameterNames.Host);
+            if (Host != null) Logger.Debug("Decoded Host");
+
             Path = GetString(values, HttpSigningConstants.SignedObjectParameterNames.Path);
+            if (Path != null) Logger.Debug("Decoded Path");
+
             QueryParameters = GetDecodedList(values, HttpSigningConstants.SignedObjectParameterNames.HashedQueryParameters);
+            if (QueryParameters != null) Logger.Debug("Decoded QueryParameters");
+
             RequestHeaders = GetDecodedList(values, HttpSigningConstants.SignedObjectParameterNames.HashedRequestHeaders);
+            if (RequestHeaders != null) Logger.Debug("Decoded RequestHeaders");
+
             BodyHash = GetString(values, HttpSigningConstants.SignedObjectParameterNames.HashedRequestBody);
+            if (BodyHash != null) Logger.Debug("Decoded BodyHash");
         }
 
         EncodedList GetDecodedList(IDictionary<string, object> values, string key)
@@ -205,6 +231,7 @@ namespace IdentityModel.HttpSigning
                 var item = values[key] as string;
                 if (item == null)
                 {
+                    Logger.Error(key + " must be a string");
                     throw new ArgumentException(key + " must be a string");
                 }
                 return item;
@@ -234,6 +261,7 @@ namespace IdentityModel.HttpSigning
                     return (short)item;
                 }
 
+                Logger.Error(key + " must be a number");
                 throw new ArgumentException(key + " must be a number");
             }
             return null;

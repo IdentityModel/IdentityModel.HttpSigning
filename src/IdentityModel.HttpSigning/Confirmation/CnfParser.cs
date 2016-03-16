@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel.HttpSigning.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,8 @@ namespace IdentityModel.HttpSigning
 
     public class CnfParser
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         static JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
         {
             NullValueHandling = NullValueHandling.Ignore
@@ -42,10 +45,28 @@ namespace IdentityModel.HttpSigning
         {
             if (String.IsNullOrWhiteSpace(json))
             {
-                throw new ArgumentNullException("json");
+                return null;
             }
 
-            var cnf = JsonConvert.DeserializeObject<Cnf>(json, _jsonSettings);
+            Cnf cnf = null;
+            try
+            {
+                cnf = JsonConvert.DeserializeObject<Cnf>(json, _jsonSettings);
+            }
+            catch(Exception ex)
+            {
+                Logger.ErrorException("Failed to parse CNF JSON", ex);
+            }
+
+            if (cnf == null)
+            {
+                Logger.Error("cnf JSON failed to parse");
+            }
+            else if (cnf.jwk == null)
+            {
+                Logger.Error("jwk missing in cnf");
+            }
+
             return cnf?.jwk;
         }
     }

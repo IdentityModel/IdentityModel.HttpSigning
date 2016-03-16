@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel.HttpSigning.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace IdentityModel.HttpSigning
         public SigningKey(Jwk jwk)
         {
             if (jwk == null) throw new ArgumentNullException("jwk");
+
             Jwk = jwk;
         }
 
@@ -25,6 +27,8 @@ namespace IdentityModel.HttpSigning
 
     public class SymmetricKey : SigningKey
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public SymmetricKey(Jwk jwk) : base(jwk)
         {
             Read();
@@ -36,11 +40,13 @@ namespace IdentityModel.HttpSigning
         {
             if (String.IsNullOrWhiteSpace(Jwk.k))
             {
+                Logger.Error("Missing " + HttpSigningConstants.Jwk.Symmetric.KeyProperty);
                 throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.Symmetric.KeyProperty);
             }
 
             if (!HttpSigningConstants.Jwk.Symmetric.Algorithms.Contains(Jwk.alg))
             {
+                Logger.Error("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
                 throw new ArgumentException("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
             }
 
@@ -56,12 +62,15 @@ namespace IdentityModel.HttpSigning
                 case "HS512": return new HS512Signature(KeyBytes);
             }
 
+            Logger.Error("Invalid algorithm: " + Jwk.alg);
             throw new InvalidOperationException("Invalid algorithm");
         }
     }
 
     public class RSAPublicKey : SigningKey
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public RSAPublicKey(Jwk jwk) : base(jwk)
         {
             Read();
@@ -74,15 +83,18 @@ namespace IdentityModel.HttpSigning
         {
             if (String.IsNullOrWhiteSpace(Jwk.n))
             {
+                Logger.Error("Missing " + HttpSigningConstants.Jwk.RSA.ModulusProperty);
                 throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.RSA.ModulusProperty);
             }
             if (String.IsNullOrWhiteSpace(Jwk.e))
             {
+                Logger.Error("Missing " + HttpSigningConstants.Jwk.RSA.ExponentProperty);
                 throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.RSA.ExponentProperty);
             }
 
             if (!HttpSigningConstants.Jwk.RSA.Algorithms.Contains(Jwk.alg))
             {
+                Logger.Error("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
                 throw new ArgumentException("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
             }
 
@@ -99,6 +111,7 @@ namespace IdentityModel.HttpSigning
                 case "RS512": return new RS512Signature(new RSAParameters { Modulus = ModulusBytes, Exponent = ExponentBytes });
             }
 
+            Logger.Error("Invalid algorithm: " + Jwk.alg);
             throw new InvalidOperationException("Invalid algorithm");
         }
     }

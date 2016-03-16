@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IdentityModel.HttpSigning.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -10,6 +11,8 @@ namespace IdentityModel.HttpSigning
 {
     public class RequestSigningOptions
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public bool SignMethod { get; set; }
         public bool SignHost { get; set; }
         public bool SignPath { get; set; }
@@ -29,33 +32,39 @@ namespace IdentityModel.HttpSigning
 
             if (SignMethod)
             {
+                Logger.Debug("Encoding method");
                 parameters.Method = request.Method;
             }
 
             if (SignHost)
             {
+                Logger.Debug("Encoding host");
                 parameters.Host = request.RequestUri.Host;
             }
 
             if (SignPath)
             {
+                Logger.Debug("Encoding path");
                 parameters.Path = request.RequestUri.AbsolutePath;
             }
 
             var queryParamsToSign = GetQueryParamsToSign(request.RequestUri);
             foreach (var item in queryParamsToSign)
             {
+                Logger.DebugFormat("Encoding query string param: {0}", item.Key);
                 parameters.QueryParameters.Add(item);
             }
 
             var headersToSign = GetRequestHeadersToSign(request);
             foreach(var item in headersToSign)
             {
+                Logger.DebugFormat("Encoding request header: {0}", item.Key);
                 parameters.RequestHeaders.Add(item);
             }
 
             if (SignBody)
             {
+                Logger.Debug("Encoding body");
                 parameters.Body = await request.ReadBodyAsync();
             }
 

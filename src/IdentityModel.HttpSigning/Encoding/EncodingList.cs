@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel.HttpSigning.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace IdentityModel.HttpSigning
 {
     public class EncodingList
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public EncodingList(
             ICollection<KeyValuePair<string, string>> list,
             string keyValueSeparator,
@@ -53,6 +56,8 @@ namespace IdentityModel.HttpSigning
                 values.Append(key);
                 values.Append(keyValueSeparator);
                 values.Append(value);
+
+                Logger.DebugFormat("Encoding key: {0}", key);
             }
 
             Keys = keys;

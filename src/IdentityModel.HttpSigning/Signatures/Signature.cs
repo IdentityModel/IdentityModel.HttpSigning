@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel.HttpSigning.Logging;
 using Jose;
 using System;
 using System.Security.Cryptography;
@@ -10,6 +11,8 @@ namespace IdentityModel.HttpSigning
 {
     public class Signature
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         private readonly JwsAlgorithm _alg;
         private readonly object _key;
 
@@ -34,12 +37,17 @@ namespace IdentityModel.HttpSigning
             try
             {
                 var json = JWT.Decode(token, _key);
-                if (json == null) return null;
+                if (json == null)
+                {
+                    Logger.Error("Failed to decode token");
+                    return null;
+                }
 
                 return EncodedParameters.FromJson(json);
             }
-            catch
+            catch(Exception ex)
             {
+                Logger.ErrorException("Failed to decode token", ex);
                 return null;
             }
         }

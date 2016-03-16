@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel.HttpSigning.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace IdentityModel.HttpSigning
 {
     public class Jwk
     {
+        private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
+
         public string kty { get; set; }
         public string alg { get; set; }
         public string kid { get; set; }
@@ -37,6 +40,7 @@ namespace IdentityModel.HttpSigning
                 return new RSAPublicKey(this);
             }
 
+            Logger.Error("Invalid key type: " + kty);
             throw new InvalidOperationException("Invalid key type");
         }
     }
