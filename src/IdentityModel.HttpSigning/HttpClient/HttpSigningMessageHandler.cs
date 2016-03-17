@@ -26,8 +26,18 @@ namespace IdentityModel.HttpSigning
             _options = options ?? new RequestSigningOptions();
         }
 
+        public HttpSigningMessageHandler(Signature signature, RequestSigningOptions options)
+            : this(signature, options, new HttpClientHandler())
+        {
+        }
+
         public HttpSigningMessageHandler(Signature signature, HttpMessageHandler innerHandler)
             : this(signature, null, innerHandler)
+        {
+        }
+
+        public HttpSigningMessageHandler(Signature signature)
+            : this(signature, null, new HttpClientHandler())
         {
         }
 
