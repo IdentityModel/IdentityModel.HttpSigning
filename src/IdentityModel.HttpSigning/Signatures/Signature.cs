@@ -48,8 +48,9 @@ namespace IdentityModel.HttpSigning
             catch(Exception ex)
             {
                 Logger.ErrorException("Failed to decode token", ex);
-                return null;
             }
+
+            return null;
         }
     }
 }

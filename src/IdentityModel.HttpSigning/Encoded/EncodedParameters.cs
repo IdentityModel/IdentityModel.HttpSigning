@@ -38,20 +38,24 @@ namespace IdentityModel.HttpSigning
 
         public static EncodedParameters FromJson(string json)
         {
-            if (String.IsNullOrWhiteSpace(json)) throw new ArgumentNullException("json");
+            if (String.IsNullOrWhiteSpace(json))
+            {
+                Logger.Error("No JSON");
+                return null;
+            }
 
             Dictionary<string, object> values = null;
             try
             {
                 values = JsonConvert.DeserializeObject<Dictionary<string, object>>(json, _jsonSettings);
+                return new EncodedParameters(values);
             }
             catch(Exception ex)
             {
                 Logger.ErrorException("Failed to deserialize JSON", ex);
-                throw new ArgumentException("Invalid JSON");
             }
 
-            return new EncodedParameters(values);
+            return null;
         }
 
         public string AccessToken { get; private set; }

@@ -133,8 +133,8 @@ namespace IdentityModel.HttpSigning.Tests
         {
             var values = new Dictionary<string, object>();
 
-            Assert.Throws<ArgumentNullException>(() => EncodedParameters.FromJson((string)null));
-            Assert.Throws<ArgumentException>(() => EncodedParameters.FromJson("not json"));
+            EncodedParameters.FromJson((string)null).Should().BeNull();
+            EncodedParameters.FromJson("not json").Should().BeNull();
         }
 
         [Fact]
