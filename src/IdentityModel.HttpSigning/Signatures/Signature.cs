@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 
 namespace IdentityModel.HttpSigning
 {
-    public class Signature
+    public abstract class Signature
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
@@ -21,6 +21,8 @@ namespace IdentityModel.HttpSigning
             _alg = alg;
             _key = key;
         }
+
+        public abstract string Alg { get; }
 
         public string Sign(EncodingParameters payload)
         {
@@ -36,6 +38,20 @@ namespace IdentityModel.HttpSigning
 
             try
             {
+                var headers = JWT.Headers(token);
+                if (headers == null || !headers.ContainsKey(HttpSigningConstants.Jwk.AlgorithmProperty))
+                {
+                    Logger.Error("Token does not contain " + HttpSigningConstants.Jwk.AlgorithmProperty + " property in header");
+                    return null;
+                }
+
+                var alg = headers[HttpSigningConstants.Jwk.AlgorithmProperty];
+                if (!Alg.Equals(alg))
+                {
+                    Logger.Error("Signature alg does not match token alg");
+                    return null;
+                }
+
                 var json = JWT.Decode(token, _key);
                 if (json == null)
                 {

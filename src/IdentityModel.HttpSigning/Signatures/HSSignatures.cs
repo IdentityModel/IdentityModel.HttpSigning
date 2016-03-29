@@ -14,19 +14,27 @@ namespace IdentityModel.HttpSigning
             : base(JwsAlgorithm.HS256, key)
         {
         }
+
+        public override string Alg { get { return "HS256"; } }
     }
+
     public class HS384Signature : Signature
     {
         public HS384Signature(byte[] key)
             : base(JwsAlgorithm.HS384, key)
         {
         }
+
+        public override string Alg { get { return "HS384"; } }
     }
+
     public class HS512Signature : Signature
     {
         public HS512Signature(byte[] key)
             : base(JwsAlgorithm.HS512, key)
         {
         }
+
+        public override string Alg { get { return "HS512"; } }
     }
 }

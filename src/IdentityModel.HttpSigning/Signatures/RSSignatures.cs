@@ -34,6 +34,8 @@ namespace IdentityModel.HttpSigning
             : base(JwsAlgorithm.RS256, key)
         {
         }
+
+        public override string Alg { get { return "RS256"; } }
     }
     public class RS384Signature : Signature
     {
@@ -46,6 +48,8 @@ namespace IdentityModel.HttpSigning
             : base(JwsAlgorithm.RS384, key)
         {
         }
+
+        public override string Alg { get { return "RS384"; } }
     }
     public class RS512Signature : Signature
     {
@@ -58,5 +62,7 @@ namespace IdentityModel.HttpSigning
             : base(JwsAlgorithm.RS512, key)
         {
         }
+
+        public override string Alg { get { return "RS512"; }}
     }
 }

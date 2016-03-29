@@ -61,5 +61,29 @@ namespace IdentityModel.HttpSigning.Tests
             var decoded = subject.Verify(token);
             decoded.Should().BeNull();
         }
+
+        [Fact]
+        public void alg_mismatch_should_fail_validation()
+        {
+            var hs256 = new HS256Signature(_symmetricKey);
+            var hs384 = new HS384Signature(_symmetricKey);
+            var hs512 = new HS512Signature(_symmetricKey);
+            var rs256 = new RS256Signature(_asymmetricKey);
+            var rs384 = new RS384Signature(_asymmetricKey);
+            var rs512 = new RS512Signature(_asymmetricKey);
+
+            var encoding = new EncodingParameters("foo");
+
+            hs256.Verify(hs384.Sign(encoding)).Should().BeNull();
+            hs384.Verify(hs512.Sign(encoding)).Should().BeNull();
+            hs512.Verify(hs256.Sign(encoding)).Should().BeNull();
+
+            rs256.Verify(rs512.Sign(encoding)).Should().BeNull();
+            rs384.Verify(rs256.Sign(encoding)).Should().BeNull();
+            rs512.Verify(rs384.Sign(encoding)).Should().BeNull();
+
+            rs512.Verify(hs512.Sign(encoding)).Should().BeNull();
+            hs512.Verify(rs512.Sign(encoding)).Should().BeNull();
+        }
     }
 }
