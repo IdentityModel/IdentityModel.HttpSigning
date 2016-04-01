@@ -19,8 +19,13 @@
     <language>en-US</language>
     <tags>OAuth2 PoP Signing HTTP JWT Tokens API</tags>
 
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Net.Http" targetFramework="net45" />
+      <frameworkAssembly assemblyName="System.Net.Http.Formatting" targetFramework="net45" />
+    </frameworkAssemblies>
+    
     <dependencies>
-      <dependency id="IdentityModel" version="1.8.0"/>
+      <dependency id="IdentityModel" version="1.10.0"/>
       <dependency id="jose-jwt" version="1.9.1" />
     </dependencies>
   </metadata>
