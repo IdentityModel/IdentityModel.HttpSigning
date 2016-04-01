@@ -3,6 +3,7 @@
 
 
 using IdentityModel.HttpSigning.Logging;
+using IdentityModel.Jwt;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,14 @@ namespace IdentityModel.HttpSigning
 {
     public abstract class SigningKey
     {
-        public SigningKey(Jwk jwk)
+        public SigningKey(JsonWebKey jwk)
         {
             if (jwk == null) throw new ArgumentNullException("jwk");
 
             Jwk = jwk;
         }
 
-        public Jwk Jwk { get; protected set; }
+        public JsonWebKey Jwk { get; protected set; }
         public abstract Signature ToSignature();
     }
 
@@ -29,7 +30,7 @@ namespace IdentityModel.HttpSigning
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        public SymmetricKey(Jwk jwk) : base(jwk)
+        public SymmetricKey(JsonWebKey jwk) : base(jwk)
         {
             Read();
         }
@@ -38,31 +39,31 @@ namespace IdentityModel.HttpSigning
 
         void Read()
         {
-            if (String.IsNullOrWhiteSpace(Jwk.k))
+            if (String.IsNullOrWhiteSpace(Jwk.K))
             {
                 Logger.Error("Missing " + HttpSigningConstants.Jwk.Symmetric.KeyProperty);
                 throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.Symmetric.KeyProperty);
             }
 
-            if (!HttpSigningConstants.Jwk.Symmetric.Algorithms.Contains(Jwk.alg))
+            if (!HttpSigningConstants.Jwk.Symmetric.Algorithms.Contains(Jwk.Alg))
             {
                 Logger.Error("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
                 throw new ArgumentException("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
             }
 
-            KeyBytes = Base64Url.Decode(Jwk.k);
+            KeyBytes = Base64Url.Decode(Jwk.K);
         }
 
         public override Signature ToSignature()
         {
-            switch(Jwk.alg)
+            switch(Jwk.Alg)
             {
                 case "HS256": return new HS256Signature(KeyBytes);
                 case "HS384": return new HS384Signature(KeyBytes);
                 case "HS512": return new HS512Signature(KeyBytes);
             }
 
-            Logger.Error("Invalid algorithm: " + Jwk.alg);
+            Logger.Error("Invalid algorithm: " + Jwk.Alg);
             throw new InvalidOperationException("Invalid algorithm");
         }
     }
@@ -71,7 +72,7 @@ namespace IdentityModel.HttpSigning
     {
         private static readonly ILog Logger = LogProvider.GetCurrentClassLogger();
 
-        public RSAPublicKey(Jwk jwk) : base(jwk)
+        public RSAPublicKey(JsonWebKey jwk) : base(jwk)
         {
             Read();
         }
@@ -81,37 +82,37 @@ namespace IdentityModel.HttpSigning
 
         void Read()
         {
-            if (String.IsNullOrWhiteSpace(Jwk.n))
+            if (String.IsNullOrWhiteSpace(Jwk.N))
             {
                 Logger.Error("Missing " + HttpSigningConstants.Jwk.RSA.ModulusProperty);
                 throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.RSA.ModulusProperty);
             }
-            if (String.IsNullOrWhiteSpace(Jwk.e))
+            if (String.IsNullOrWhiteSpace(Jwk.E))
             {
                 Logger.Error("Missing " + HttpSigningConstants.Jwk.RSA.ExponentProperty);
                 throw new ArgumentException("Missing " + HttpSigningConstants.Jwk.RSA.ExponentProperty);
             }
 
-            if (!HttpSigningConstants.Jwk.RSA.Algorithms.Contains(Jwk.alg))
+            if (!HttpSigningConstants.Jwk.RSA.Algorithms.Contains(Jwk.Alg))
             {
                 Logger.Error("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
                 throw new ArgumentException("Invalid " + HttpSigningConstants.Jwk.AlgorithmProperty);
             }
 
-            ModulusBytes = Base64Url.Decode(Jwk.n);
-            ExponentBytes = Base64Url.Decode(Jwk.e);
+            ModulusBytes = Base64Url.Decode(Jwk.N);
+            ExponentBytes = Base64Url.Decode(Jwk.E);
         }
 
         public override Signature ToSignature()
         {
-            switch (Jwk.alg)
+            switch (Jwk.Alg)
             {
                 case "RS256": return new RS256Signature(new RSAParameters { Modulus = ModulusBytes, Exponent = ExponentBytes });
                 case "RS384": return new RS384Signature(new RSAParameters { Modulus = ModulusBytes, Exponent = ExponentBytes });
                 case "RS512": return new RS512Signature(new RSAParameters { Modulus = ModulusBytes, Exponent = ExponentBytes });
             }
 
-            Logger.Error("Invalid algorithm: " + Jwk.alg);
+            Logger.Error("Invalid algorithm: " + Jwk.Alg);
             throw new InvalidOperationException("Invalid algorithm");
         }
     }

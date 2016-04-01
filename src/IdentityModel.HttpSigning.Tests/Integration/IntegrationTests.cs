@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using Newtonsoft.Json;
+using IdentityModel.Jwt;
 
 namespace IdentityModel.HttpSigning.Tests.Integration
 {
@@ -28,11 +29,11 @@ namespace IdentityModel.HttpSigning.Tests.Integration
             var token = signature.Sign(payload);
 
             var cnfJson = new Cnf(
-                new Jwk
+                new JsonWebKey
                 {
-                    kty = "oct",
-                    alg = "HS256",
-                    k = Base64Url.Encode(_symmetricKey)
+                    Kty = "oct",
+                    Alg = "HS256",
+                    K = Base64Url.Encode(_symmetricKey)
                 }).ToJson();
             var jwk = CnfParser.Parse(cnfJson);
             var key = jwk.ToPublicKey();
@@ -55,11 +56,11 @@ namespace IdentityModel.HttpSigning.Tests.Integration
             var token = signature.Sign(payload);
 
             var cnfJson = new Cnf(
-               new Jwk
+               new JsonWebKey
                {
-                   kty = "oct",
-                   alg = "HS256",
-                   k = Base64Url.Encode(_symmetricKey)
+                   Kty = "oct",
+                   Alg = "HS256",
+                   K = Base64Url.Encode(_symmetricKey)
                }).ToJson();
             var jwk = CnfParser.Parse(cnfJson);
             var key = jwk.ToPublicKey();

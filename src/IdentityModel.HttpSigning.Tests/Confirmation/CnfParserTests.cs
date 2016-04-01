@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using Newtonsoft.Json;
+using IdentityModel.Jwt;
 
 namespace IdentityModel.HttpSigning.Tests.Confirmation
 {
@@ -32,19 +33,19 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
         [Fact]
         public void parser_should_read_proper_cnf_structure()
         {
-            var jwk = new Jwk
+            var jwk = new JsonWebKey
             {
-                kty = "oct",
-                alg = "HS256",
-                k = "123"
+                Kty = "oct",
+                Alg = "HS256",
+                K = "123"
             };
 
             var json = new Cnf(jwk).ToJson();
             jwk = CnfParser.Parse(json);
             jwk.Should().NotBeNull();
-            jwk.kty.Should().Be("oct");
-            jwk.alg.Should().Be("HS256");
-            jwk.k.Should().Be("123");
+            jwk.Kty.Should().Be("oct");
+            jwk.Alg.Should().Be("HS256");
+            jwk.K.Should().Be("123");
         }
     }
 }

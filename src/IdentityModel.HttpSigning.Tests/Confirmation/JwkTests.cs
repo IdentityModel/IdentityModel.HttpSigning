@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
+using IdentityModel.Jwt;
 
 namespace IdentityModel.HttpSigning.Tests.Confirmation
 {
@@ -17,12 +18,12 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
         [Fact]
         public void invalid_key_type_should_throw()
         {
-            var jwk = new Jwk
+            var jwk = new JsonWebKey
             {
-                kty = "foo",
-                k = "1234",
-                e = "1234",
-                n = "abc"
+                Kty = "foo",
+                K = "1234",
+                E = "1234",
+                N = "abc"
             };
 
             Assert.Throws<InvalidOperationException>(() => jwk.ToPublicKey());
@@ -31,11 +32,11 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
         [Fact]
         public void symmetric_key_type_should_create_correct_public_key_object()
         {
-            var jwk = new Jwk
+            var jwk = new JsonWebKey
             {
-                kty = "oct",
-                alg = "HS256",
-                k = "1234"
+                Kty = "oct",
+                Alg = "HS256",
+                K = "1234"
             };
 
             var key = jwk.ToPublicKey();
@@ -45,12 +46,12 @@ namespace IdentityModel.HttpSigning.Tests.Confirmation
         [Fact]
         public void asymmetric_key_type_should_create_correct_public_key_object()
         {
-            var jwk = new Jwk
+            var jwk = new JsonWebKey
             {
-                kty = "RSA",
-                alg = "RS256",
-                e = "1234",
-                n = "abc"
+                Kty = "RSA",
+                Alg = "RS256",
+                E = "1234",
+                N = "abc"
             };
 
             var key = jwk.ToPublicKey();

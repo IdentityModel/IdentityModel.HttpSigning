@@ -3,6 +3,7 @@
 
 
 using IdentityModel.HttpSigning.Logging;
+using IdentityModel.Jwt;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,17 +20,19 @@ namespace IdentityModel.HttpSigning
             NullValueHandling = NullValueHandling.Ignore
         };
 
-        public Cnf(Jwk jwk)
+        public Cnf(JsonWebKey jwk)
         {
             this.jwk = jwk;
         }
 
-        public Jwk jwk { get; set; }
+        public JsonWebKey jwk { get; set; }
 
         public string ToJson()
         {
             return JsonConvert.SerializeObject(this, _jsonSettings);
         }
+
+      
     }
 
     public class CnfParser
@@ -41,7 +44,7 @@ namespace IdentityModel.HttpSigning
             NullValueHandling = NullValueHandling.Ignore
         };
 
-        public static Jwk Parse(string json)
+        public static JsonWebKey Parse(string json)
         {
             if (String.IsNullOrWhiteSpace(json))
             {
